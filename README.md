@@ -7,10 +7,12 @@ It has support for redis pipelining.
 Features:
 
 - Databases
+  - [BboltDB](https://github.com/etcd-io/bbolt): bolt clone维护版 by etcd-io
   - [BoltDB](https://github.com/boltdb/bolt)
   - [LevelDB](https://github.com/syndtr/goleveldb)
   - map (in-memory) with [AOF persistence](https://redis.io/topics/persistence)
   - btree (in-memory) with [AOF persistence](https://redis.io/topics/persistence)
+  - [cznic/kv](https://github.com/cznic/kv)
 - Option to disable fsync
 - Compatible with Redis clients
 
@@ -29,7 +31,9 @@ Start server with various storage types:
 ./kvbench --store=map
 ./kvbench --store=btree
 ./kvbench --store=bolt
+./kvbench --store=bbolt
 ./kvbench --store=leveldb
+./kvbench --store=kv
 ```
 
 Start server with non-default port:

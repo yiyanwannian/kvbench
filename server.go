@@ -59,6 +59,11 @@ func Start(opts Options) error {
 			path = "bolt.db"
 		}
 		store, err = newBoltStore(path, fsync)
+	case "bbolt":
+		if path == "" {
+			path = "bbolt.db"
+		}
+		store, err = newBboltStore(path, fsync)
 	case "leveldb":
 		if path == "" {
 			path = "leveldb.db"
