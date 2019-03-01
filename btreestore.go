@@ -24,7 +24,7 @@ func (a *btreeItem) Less(v btree.Item, ctx interface{}) bool {
 	return a.key < v.(*btreeItem).key
 }
 
-func newBTreeStore(path string, fsync bool) (*btreeStore, error) {
+func newBTreeStore(path string, fsync bool) (Store, error) {
 	tr := btree.New(32, nil)
 	var err error
 	var aof *AOF

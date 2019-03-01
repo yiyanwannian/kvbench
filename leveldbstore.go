@@ -17,7 +17,7 @@ type leveldbStore struct {
 	wo    *opt.WriteOptions
 }
 
-func newLevelDBStore(path string, fsync bool) (*leveldbStore, error) {
+func newLevelDBStore(path string, fsync bool) (Store, error) {
 	if path == ":memory:" {
 		return nil, errMemoryNotAllowed
 	}

@@ -21,7 +21,7 @@ func boltKey(key []byte) []byte {
 	copy(r[1:], key)
 	return r
 }
-func newBoltStore(path string, fsync bool) (*boltStore, error) {
+func newBoltStore(path string, fsync bool) (Store, error) {
 	if path == ":memory:" {
 		return nil, errMemoryNotAllowed
 	}

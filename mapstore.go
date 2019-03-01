@@ -14,7 +14,7 @@ type mapStore struct {
 	aof  *AOF
 }
 
-func newMapStore(path string, fsync bool) (*mapStore, error) {
+func newMapStore(path string, fsync bool) (Store, error) {
 	keys := make(map[string][]byte)
 	var err error
 	var aof *AOF

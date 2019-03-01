@@ -14,7 +14,7 @@ type kvStore struct {
 	fsync bool
 }
 
-func newKVStore(path string, fsync bool) (*kvStore, error) {
+func newKVStore(path string, fsync bool) (Store, error) {
 	if path == ":memory:" {
 		return nil, errMemoryNotAllowed
 	}

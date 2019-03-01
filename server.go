@@ -75,6 +75,11 @@ func Start(opts Options) error {
 			path = "kv.db"
 		}
 		store, err = newKVStore(path, fsync)
+	case "badger":
+		if path == "" {
+			path = "badger"
+		}
+		store, err = newBadgerStore(path, fsync)
 	}
 	if err != nil {
 		return err
