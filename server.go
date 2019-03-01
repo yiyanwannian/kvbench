@@ -80,10 +80,17 @@ func Start(opts Options) error {
 			path = "badger"
 		}
 		store, err = newBadgerStore(path, fsync)
+	case "buntdb":
+		if path == "" {
+			path = "buntdb.db"
+		}
+		store, err = newBuntdbStore(path, fsync)
+
+		if err != nil {
+			return err
+		}
 	}
-	if err != nil {
-		return err
-	}
+
 	defer store.Close()
 	log.Printf("store type: %v, fsync: %v", which, fsync)
 	var srv *redcon.Server

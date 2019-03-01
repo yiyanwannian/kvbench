@@ -16,6 +16,7 @@ var stores = []struct {
 	{"bolt", "bolt.db", newBboltStore},
 	{"leveldb", "leveldb.db", newLevelDBStore},
 	{"kv", "kv.db", newKVStore},
+	{"buntdb", "buntdb.db", newBuntdbStore},
 	{"btree", "btree.db", newBTreeStore},
 	{"btree/memory", ":memory:", newBTreeStore},
 	{"map", "map.db", newMapStore},
