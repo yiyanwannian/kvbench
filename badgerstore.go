@@ -101,9 +101,10 @@ func (s *badgerStore) Get(key []byte) ([]byte, bool, error) {
 }
 
 func (s *badgerStore) Del(key []byte) (bool, error) {
-	return true, s.db.Update(func(txn *badger.Txn) error {
+	err := s.db.Update(func(txn *badger.Txn) error {
 		return txn.Delete(key)
 	})
+	return err == nil, err
 }
 
 func (s *badgerStore) Keys(pattern []byte, limit int, withvals bool) ([][]byte, [][]byte, error) {

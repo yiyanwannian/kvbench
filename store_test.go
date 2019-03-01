@@ -2,9 +2,12 @@ package kvbench
 
 import (
 	"encoding/binary"
+	"flag"
 	"os"
 	"testing"
 )
+
+var count = flag.Int("count", 1000, "item count for test")
 
 var stores = []struct {
 	Name    string
@@ -17,6 +20,7 @@ var stores = []struct {
 	{"leveldb", "leveldb.db", newLevelDBStore},
 	{"kv", "kv.db", newKVStore},
 	{"buntdb", "buntdb.db", newBuntdbStore},
+	{"rocksdb", "rocksdb.db", newRocksdbStore},
 	{"btree", "btree.db", newBTreeStore},
 	{"btree/memory", ":memory:", newBTreeStore},
 	{"map", "map.db", newMapStore},
@@ -63,9 +67,8 @@ func testStore(t *testing.T, store Store, fsync bool) {
 
 	defer store.Close()
 
-	count := 1000
 	t.Run("set", func(tt *testing.T) {
-		for i := 0; i < count; i++ {
+		for i := 0; i < *count; i++ {
 			err := store.Set(prefixKey(i), v)
 			if err != nil {
 				tt.Fatalf("failed to set key %d: %v", i, err)
@@ -74,13 +77,13 @@ func testStore(t *testing.T, store Store, fsync bool) {
 	})
 
 	t.Run("get", func(tt *testing.T) {
-		for i := 0; i < count; i++ {
+		for i := 0; i < *count; i++ {
 			_, ok, err := store.Get(prefixKey(i))
 			if err != nil {
-				tt.Logf("failed to get key %d: %v", i, err)
+				tt.Fatalf("failed to get key %d: %v", i, err)
 			}
 			if !ok {
-				tt.Logf("the key %d does not exist", i)
+				tt.Fatalf("the key %d does not exist", i)
 			}
 		}
 	})

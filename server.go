@@ -85,10 +85,15 @@ func Start(opts Options) error {
 			path = "buntdb.db"
 		}
 		store, err = newBuntdbStore(path, fsync)
-
-		if err != nil {
-			return err
+	case "rocksdb":
+		if path == "" {
+			path = "rocksdb.db"
 		}
+		store, err = newRocksdbStore(path, fsync)
+	}
+
+	if err != nil {
+		return err
 	}
 
 	defer store.Close()

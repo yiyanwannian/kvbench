@@ -94,10 +94,11 @@ func (s *buntdbStore) Get(key []byte) ([]byte, bool, error) {
 }
 
 func (s *buntdbStore) Del(key []byte) (bool, error) {
-	return true, s.db.Update(func(tx *buntdb.Tx) error {
+	err := s.db.Update(func(tx *buntdb.Tx) error {
 		_, err := tx.Delete(string(key))
 		return err
 	})
+	return err == nil, err
 }
 
 func (s *buntdbStore) Keys(pattern []byte, limit int, withvals bool) ([][]byte, [][]byte, error) {
@@ -107,7 +108,9 @@ func (s *buntdbStore) Keys(pattern []byte, limit int, withvals bool) ([][]byte, 
 	err := s.db.View(func(tx *buntdb.Tx) error {
 		return tx.AscendKeys(string(pattern), func(key, value string) bool {
 			keys = append(keys, []byte(key))
-			vals = append(vals, []byte(value))
+			if withvals {
+				vals = append(vals, []byte(value))
+			}
 			return true
 		})
 	})
