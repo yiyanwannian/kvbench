@@ -7,19 +7,29 @@ import (
 	"os"
 	"runtime"
 	"sync"
+	"time"
 
-	"github.com/smallnest/hrtime"
+	"github.com/rcrowley/go-metrics"
+
 	"github.com/smallnest/kvbench"
 	"github.com/smallnest/log"
 )
 
 var (
-	n      = flag.Int("n", 10000, "count")
+	n      = flag.Int("n", 1000000, "count")
 	c      = flag.Int("c", runtime.GOMAXPROCS(-1), "concurrent goroutines")
 	size   = flag.Int("size", 256, "data size")
 	fsync  = flag.Bool("fsync", false, "fsync")
 	memory = flag.Bool("memory", false, "fsync")
 	s      = flag.String("s", "map", "store type")
+)
+
+var (
+	setRate      = metrics.GetOrRegisterTimer("set", nil)
+	getRate      = metrics.GetOrRegisterTimer("get", nil)
+	setMixedRate = metrics.GetOrRegisterTimer("setMixed", nil)
+	getMixedRate = metrics.GetOrRegisterTimer("getMixed", nil)
+	delRate      = metrics.GetOrRegisterTimer("del", nil)
 )
 
 func main() {
@@ -44,56 +54,52 @@ func main() {
 	{
 		var wg sync.WaitGroup
 		wg.Add(*c)
-		benchmarks := make([]*hrtime.Benchmark, *c)
 
 		for j := 0; j < *c; j++ {
 			index := uint64(j)
 			go func() {
-				b := hrtime.NewBenchmark(numPerG)
-				benchmarks[index] = b
 				i := index
-				for b.Next() {
+				for k := 0; k < numPerG; k++ {
+					now := time.Now()
 					store.Set(genKey(i), data)
+					setRate.UpdateSince(now)
 					i += index
 				}
 				wg.Done()
 			}()
 		}
 		wg.Wait()
-		bench := hrtime.MergeBenchmarks(benchmarks...)
-		fmt.Println(bench.Histogram(10))
+		fmt.Printf("set rate: %d, mean: %d ns, min: %d ns, max: %d ns\n",
+			int64(setRate.Rate1()), int64(setRate.Mean()), int64(setRate.Min()), int64(setRate.Max()))
 	}
 
 	// test get
 	{
 		var wg sync.WaitGroup
 		wg.Add(*c)
-		benchmarks := make([]*hrtime.Benchmark, *c)
 
 		for j := 0; j < *c; j++ {
 			index := uint64(j)
 			go func() {
-				b := hrtime.NewBenchmark(numPerG)
-				benchmarks[index] = b
-
 				i := index
-				for b.Next() {
+				for k := 0; k < numPerG; k++ {
+					now := time.Now()
 					store.Get(genKey(i))
+					getRate.UpdateSince(now)
 					i += index
 				}
 				wg.Done()
 			}()
 		}
 		wg.Wait()
-		bench := hrtime.MergeBenchmarks(benchmarks...)
-		fmt.Println(bench.Histogram(10))
+		fmt.Printf("get rate: %d, mean: %d ns, min: %d ns, max: %d ns\n",
+			int64(getRate.Rate1()), int64(getRate.Mean()), int64(getRate.Min()), int64(getRate.Max()))
 	}
 
 	// test multiple get/one set
 	{
 		var wg sync.WaitGroup
 		wg.Add(*c)
-		benchmarks := make([]*hrtime.Benchmark, *c)
 
 		ch := make(chan struct{})
 		go func() {
@@ -103,7 +109,9 @@ func main() {
 				case <-ch:
 					return
 				default:
+					now := time.Now()
 					store.Set(genKey(i), data)
+					setMixedRate.UpdateSince(now)
 					i++
 				}
 			}
@@ -111,12 +119,12 @@ func main() {
 		for j := 0; j < *c; j++ {
 			index := uint64(j)
 			go func() {
-				b := hrtime.NewBenchmark(numPerG)
-				benchmarks[index] = b
 
 				i := index
-				for b.Next() {
+				for k := 0; k < numPerG; k++ {
+					now := time.Now()
 					store.Get(genKey(i))
+					getMixedRate.UpdateSince(now)
 					i += index
 				}
 				wg.Done()
@@ -124,33 +132,33 @@ func main() {
 		}
 		wg.Wait()
 		close(ch)
-		bench := hrtime.MergeBenchmarks(benchmarks...)
-		fmt.Println(bench.Histogram(10))
+		fmt.Printf("setmixed rate: %d, mean: %d ns, min: %d ns, max: %d ns\n",
+			int64(setMixedRate.Rate1()), int64(setMixedRate.Mean()), int64(setMixedRate.Min()), int64(setMixedRate.Max()))
+		fmt.Printf("getmixed rate: %d, mean: %d ns, min: %d ns, max: %d ns\n",
+			int64(getMixedRate.Rate1()), int64(getMixedRate.Mean()), int64(getMixedRate.Min()), int64(getMixedRate.Max()))
 	}
 
 	// test del
 	{
 		var wg sync.WaitGroup
 		wg.Add(*c)
-		benchmarks := make([]*hrtime.Benchmark, *c)
 
 		for j := 0; j < *c; j++ {
 			index := uint64(j)
 			go func() {
-				b := hrtime.NewBenchmark(numPerG)
-				benchmarks[index] = b
-
 				i := index
-				for b.Next() {
+				for k := 0; k < numPerG; k++ {
+					now := time.Now()
 					store.Del(genKey(i))
+					delRate.UpdateSince(now)
 					i += index
 				}
 				wg.Done()
 			}()
 		}
 		wg.Wait()
-		bench := hrtime.MergeBenchmarks(benchmarks...)
-		fmt.Println(bench.Histogram(10))
+		fmt.Printf("del rate: %d, mean: %d ns, min: %d ns, max: %d ns\n",
+			int64(delRate.Rate1()), int64(delRate.Mean()), int64(delRate.Min()), int64(delRate.Max()))
 	}
 }
 
