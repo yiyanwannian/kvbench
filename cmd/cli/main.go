@@ -6,45 +6,51 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"strings"
 	"sync"
 	"time"
-
-	"github.com/rcrowley/go-metrics"
 
 	"github.com/smallnest/kvbench"
 	"github.com/smallnest/log"
 )
 
 var (
-	n      = flag.Int("n", 1000000, "count")
-	c      = flag.Int("c", runtime.GOMAXPROCS(-1), "concurrent goroutines")
-	size   = flag.Int("size", 256, "data size")
-	fsync  = flag.Bool("fsync", false, "fsync")
-	memory = flag.Bool("memory", false, "fsync")
-	s      = flag.String("s", "map", "store type")
-)
-
-var (
-	setRate      = metrics.GetOrRegisterTimer("set", nil)
-	getRate      = metrics.GetOrRegisterTimer("get", nil)
-	setMixedRate = metrics.GetOrRegisterTimer("setMixed", nil)
-	getMixedRate = metrics.GetOrRegisterTimer("getMixed", nil)
-	delRate      = metrics.GetOrRegisterTimer("del", nil)
+	n     = flag.Int("n", 10000, "count")
+	c     = flag.Int("c", runtime.GOMAXPROCS(-1), "concurrent goroutines")
+	size  = flag.Int("size", 256, "data size")
+	fsync = flag.Bool("fsync", false, "fsync")
+	s     = flag.String("s", "map", "store type")
 )
 
 func main() {
 	flag.Parse()
 
+	fmt.Printf("n=%d, c=%d\n", *n, *c)
+
+	var memory bool
 	var path string
-	if *memory {
+	if strings.HasSuffix(*s, "/memory") {
+		memory = true
 		path = ":memory:"
+		*s = strings.TrimSuffix(*s, "/memory")
 	}
+
 	store, path, err := getStore(*s, *fsync, path)
 	if err != nil {
 		panic(err)
 	}
-	if !*memory {
+	if memory {
 		defer os.RemoveAll(path)
+	}
+
+	name := *s
+	if memory {
+		name = name + "/memory"
+	}
+	if *fsync {
+		name = name + "/fsync"
+	} else {
+		name = name + "/nofsync"
 	}
 
 	data := make([]byte, *size)
@@ -55,22 +61,21 @@ func main() {
 		var wg sync.WaitGroup
 		wg.Add(*c)
 
+		start := time.Now()
 		for j := 0; j < *c; j++ {
 			index := uint64(j)
 			go func() {
 				i := index
 				for k := 0; k < numPerG; k++ {
-					now := time.Now()
 					store.Set(genKey(i), data)
-					setRate.UpdateSince(now)
 					i += index
 				}
 				wg.Done()
 			}()
 		}
 		wg.Wait()
-		fmt.Printf("set rate: %d, mean: %d ns, min: %d ns, max: %d ns\n",
-			int64(setRate.Rate1()), int64(setRate.Mean()), int64(setRate.Min()), int64(setRate.Max()))
+		d := int64(time.Since(start))
+		fmt.Printf("%s set rate: %d op/s, mean: %d ns\n", name, int64(*n)*1e6/(d/1e3), d/int64((*n)*(*c)))
 	}
 
 	// test get
@@ -78,22 +83,21 @@ func main() {
 		var wg sync.WaitGroup
 		wg.Add(*c)
 
+		start := time.Now()
 		for j := 0; j < *c; j++ {
 			index := uint64(j)
 			go func() {
 				i := index
 				for k := 0; k < numPerG; k++ {
-					now := time.Now()
 					store.Get(genKey(i))
-					getRate.UpdateSince(now)
 					i += index
 				}
 				wg.Done()
 			}()
 		}
 		wg.Wait()
-		fmt.Printf("get rate: %d, mean: %d ns, min: %d ns, max: %d ns\n",
-			int64(getRate.Rate1()), int64(getRate.Mean()), int64(getRate.Min()), int64(getRate.Max()))
+		d := int64(time.Since(start))
+		fmt.Printf("%s get rate: %d op/s, mean: %d ns\n", name, int64(*n)*1e6/(d/1e3), d/int64((*n)*(*c)))
 	}
 
 	// test multiple get/one set
@@ -102,6 +106,10 @@ func main() {
 		wg.Add(*c)
 
 		ch := make(chan struct{})
+
+		var setCount uint64
+
+		start := time.Now()
 		go func() {
 			i := uint64(0)
 			for {
@@ -109,9 +117,8 @@ func main() {
 				case <-ch:
 					return
 				default:
-					now := time.Now()
 					store.Set(genKey(i), data)
-					setMixedRate.UpdateSince(now)
+					setCount++
 					i++
 				}
 			}
@@ -122,9 +129,7 @@ func main() {
 
 				i := index
 				for k := 0; k < numPerG; k++ {
-					now := time.Now()
 					store.Get(genKey(i))
-					getMixedRate.UpdateSince(now)
 					i += index
 				}
 				wg.Done()
@@ -132,10 +137,10 @@ func main() {
 		}
 		wg.Wait()
 		close(ch)
-		fmt.Printf("setmixed rate: %d, mean: %d ns, min: %d ns, max: %d ns\n",
-			int64(setMixedRate.Rate1()), int64(setMixedRate.Mean()), int64(setMixedRate.Min()), int64(setMixedRate.Max()))
-		fmt.Printf("getmixed rate: %d, mean: %d ns, min: %d ns, max: %d ns\n",
-			int64(getMixedRate.Rate1()), int64(getMixedRate.Mean()), int64(getMixedRate.Min()), int64(getMixedRate.Max()))
+		d := int64(time.Since(start))
+
+		fmt.Printf("%s setmixed rate: %d op/s, mean: %d ns\n", name, int64(setCount)*1e6/(d/1e3), d/int64((*n)*(*c)))
+		fmt.Printf("%s getmixed rate: %d op/s, mean: %d ns\n", name, int64(*n)*1e6/(d/1e3), d/int64((*n)*(*c)))
 	}
 
 	// test del
@@ -143,22 +148,21 @@ func main() {
 		var wg sync.WaitGroup
 		wg.Add(*c)
 
+		start := time.Now()
 		for j := 0; j < *c; j++ {
 			index := uint64(j)
 			go func() {
 				i := index
 				for k := 0; k < numPerG; k++ {
-					now := time.Now()
 					store.Del(genKey(i))
-					delRate.UpdateSince(now)
 					i += index
 				}
 				wg.Done()
 			}()
 		}
 		wg.Wait()
-		fmt.Printf("del rate: %d, mean: %d ns, min: %d ns, max: %d ns\n",
-			int64(delRate.Rate1()), int64(delRate.Mean()), int64(delRate.Min()), int64(delRate.Max()))
+		d := int64(time.Since(start))
+		fmt.Printf("%s del rate: %d op/s, mean: %d ns\n", name, int64(*n)*1e6/(d/1e3), d/int64((*n)*(*c)))
 	}
 }
 
