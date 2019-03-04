@@ -39,30 +39,30 @@ Use 10000 items to test. Size of value of items is 256 bytes and size of key of 
 
 #### throughouts
 
-![set](cmd/cli/benchmark/nofsync-set-throughputs.png)
-![get](cmd/cli/benchmark/nofsync-get-throughputs.png)
-![mixed](cmd/cli/benchmark/nofsync-mixed-throughputs.png)
-![del](cmd/cli/benchmark/nofsync-del-throughputs.png)
+![set](cmd/cli/benchmarks/nofsync-set-throughputs.png)
+![get](cmd/cli/benchmarks/nofsync-get-throughputs.png)
+![mixed](cmd/cli/benchmarks/nofsync-mixed-throughputs.png)
+![del](cmd/cli/benchmarks/nofsync-del-throughputs.png)
 
 #### time
 
-![set](cmd/cli/benchmark/nofsync-set-time.png)
-![get](cmd/cli/benchmark/nofsync-get-time.png)
-![mixed](cmd/cli/benchmark/nofsync-mixed-time.png)
-![del](cmd/cli/benchmark/nofsync-del-time.png)
+![set](cmd/cli/benchmarks/nofsync-set-time.png)
+![get](cmd/cli/benchmarks/nofsync-get-time.png)
+![mixed](cmd/cli/benchmarks/nofsync-mixed-time.png)
+![del](cmd/cli/benchmarks/nofsync-del-time.png)
 
 ### fsync enabled
 
 #### throughouts
 
-![set](cmd/cli/benchmark/fsync-set-throughputs.png)
-![get](cmd/cli/benchmark/fsync-get-throughputs.png)
-![mixed](cmd/cli/benchmark/fsync-mixed-throughputs.png)
-![del](cmd/cli/benchmark/fsync-del-throughputs.png)
+![set](cmd/cli/benchmarks/fsync-set-throughputs.png)
+![get](cmd/cli/benchmarks/fsync-get-throughputs.png)
+![mixed](cmd/cli/benchmarks/fsync-mixed-throughputs.png)
+![del](cmd/cli/benchmarks/fsync-del-throughputs.png)
 
 #### time
 
-![set](cmd/cli/benchmark/fsync-set-time.png)
-![get](cmd/cli/benchmark/fsync-get-time.png)
-![mixed](cmd/cli/benchmark/fsync-mixed-time.png)
-![del](cmd/cli/benchmark/fsync-del-time.png)
+![set](cmd/cli/benchmarks/fsync-set-time.png)
+![get](cmd/cli/benchmarks/fsync-get-time.png)
+![mixed](cmd/cli/benchmarks/fsync-mixed-time.png)
+![del](cmd/cli/benchmarks/fsync-del-time.png)
