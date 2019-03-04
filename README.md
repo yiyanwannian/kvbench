@@ -18,6 +18,7 @@ Features:
   - [buntdb](https://github.com/tidwall/buntdb)
   - [LevelDB](https://github.com/syndtr/goleveldb)
   - [cznic/kv](https://github.com/cznic/kv)
+  - [rocksdb](https://github.com/tecbot/gorocksdb)
   - map (in-memory) with [AOF persistence](https://redis.io/topics/persistence)
   - btree (in-memory) with [AOF persistence](https://redis.io/topics/persistence)
 - Option to disable fsync
