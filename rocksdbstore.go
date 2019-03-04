@@ -21,7 +21,7 @@ func rocksdbKey(key []byte) []byte {
 	return r
 }
 
-func newRocksdbStore(path string, fsync bool) (Store, error) {
+func NewRocksdbStore(path string, fsync bool) (Store, error) {
 	if path == ":memory:" {
 		return nil, errMemoryNotAllowed
 	}

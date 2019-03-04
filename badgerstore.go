@@ -18,7 +18,7 @@ func badgerKey(key []byte) []byte {
 	return r
 }
 
-func newBadgerStore(path string, fsync bool) (Store, error) {
+func NewBadgerStore(path string, fsync bool) (Store, error) {
 	if path == ":memory:" {
 		return nil, errMemoryNotAllowed
 	}

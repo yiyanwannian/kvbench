@@ -18,7 +18,7 @@ func buntdbKey(key []byte) []byte {
 	return r
 }
 
-func newBuntdbStore(path string, fsync bool) (Store, error) {
+func NewBuntdbStore(path string, fsync bool) (Store, error) {
 	opts := buntdb.Config{}
 	if fsync {
 		opts.SyncPolicy = buntdb.Always

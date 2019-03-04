@@ -48,48 +48,48 @@ func Start(opts Options) error {
 		if path == "" {
 			path = "map.db"
 		}
-		store, err = newMapStore(path, fsync)
+		store, err = NewMapStore(path, fsync)
 	case "btree":
 		if path == "" {
 			path = "btree.db"
 		}
-		store, err = newBTreeStore(path, fsync)
+		store, err = NewBTreeStore(path, fsync)
 	case "bolt":
 		if path == "" {
 			path = "bolt.db"
 		}
-		store, err = newBoltStore(path, fsync)
+		store, err = NewBoltStore(path, fsync)
 	case "bbolt":
 		if path == "" {
 			path = "bbolt.db"
 		}
-		store, err = newBboltStore(path, fsync)
+		store, err = NewBboltStore(path, fsync)
 	case "leveldb":
 		if path == "" {
 			path = "leveldb.db"
 		}
-		store, err = newLevelDBStore(path, fsync)
+		store, err = NewLevelDBStore(path, fsync)
 	case "kv":
 		log.Warningf("kv store is unstable")
 		if path == "" {
 			path = "kv.db"
 		}
-		store, err = newKVStore(path, fsync)
+		store, err = NewKVStore(path, fsync)
 	case "badger":
 		if path == "" {
 			path = "badger"
 		}
-		store, err = newBadgerStore(path, fsync)
+		store, err = NewBadgerStore(path, fsync)
 	case "buntdb":
 		if path == "" {
 			path = "buntdb.db"
 		}
-		store, err = newBuntdbStore(path, fsync)
+		store, err = NewBuntdbStore(path, fsync)
 	case "rocksdb":
 		if path == "" {
 			path = "rocksdb.db"
 		}
-		store, err = newRocksdbStore(path, fsync)
+		store, err = NewRocksdbStore(path, fsync)
 	}
 
 	if err != nil {
