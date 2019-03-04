@@ -77,7 +77,7 @@ func Start(opts Options) error {
 		store, err = NewKVStore(path, fsync)
 	case "badger":
 		if path == "" {
-			path = "badger"
+			path = "badger.db"
 		}
 		store, err = NewBadgerStore(path, fsync)
 	case "buntdb":

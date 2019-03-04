@@ -8,7 +8,6 @@ STORES=("badger" "bbolt" "bolt" "leveldb" "kv" "buntdb" "rocksdb" "btree" "btree
 
 `rm  -f .*`
 `rm  -fr *.db`
-`rm -fr badger`
 
 echo "=========== test nofsync ==========="
 for i in "${STORES[@]}"
@@ -18,7 +17,6 @@ done
 
 `rm  -f .*`
 `rm  -fr *.db`
-`rm -fr badger`
 
 echo ""
 echo "=========== test fsync ==========="
@@ -30,4 +28,3 @@ done
 
 `rm  -f .*`
 `rm  -fr *.db`
-`rm -fr badger`

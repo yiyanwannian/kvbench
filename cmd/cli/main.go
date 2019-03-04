@@ -139,7 +139,12 @@ func main() {
 		close(ch)
 		d := int64(time.Since(start))
 
-		fmt.Printf("%s setmixed rate: %d op/s, mean: %d ns\n", name, int64(setCount)*1e6/(d/1e3), d/int64((*n)*(*c)))
+		if setCount == 0 {
+			fmt.Printf("%s setmixed rate: 0 op/s, mean: 0 ns\n", name)
+		} else {
+			fmt.Printf("%s setmixed rate: %d op/s, mean: %d ns\n", name, int64(setCount)*1e6/(d/1e3), d/int64((*n)*int(setCount)))
+		}
+		fmt.Printf("%s setmixed rate: %d op/s, mean: %d ns\n", name, int64(setCount)*1e6/(d/1e3), d/int64((*n)*int(setCount)))
 		fmt.Printf("%s getmixed rate: %d op/s, mean: %d ns\n", name, int64(*n)*1e6/(d/1e3), d/int64((*n)*(*c)))
 	}
 
@@ -212,7 +217,7 @@ func getStore(s string, fsync bool, path string) (kvbench.Store, string, error) 
 		store, err = kvbench.NewKVStore(path, fsync)
 	case "badger":
 		if path == "" {
-			path = "badger"
+			path = "badger.db"
 		}
 		store, err = kvbench.NewBadgerStore(path, fsync)
 	case "buntdb":

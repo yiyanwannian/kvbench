@@ -14,17 +14,17 @@ var stores = []struct {
 	Path    string
 	Factory func(path string, fsync bool) (Store, error)
 }{
-	{"badger", "badger", newBadgerStore},
-	{"bbolt", "bbolt.db", newBboltStore},
-	{"bolt", "bolt.db", newBboltStore},
-	{"leveldb", "leveldb.db", newLevelDBStore},
-	{"kv", "kv.db", newKVStore},
-	{"buntdb", "buntdb.db", newBuntdbStore},
-	{"rocksdb", "rocksdb.db", newRocksdbStore},
-	{"btree", "btree.db", newBTreeStore},
-	{"btree/memory", ":memory:", newBTreeStore},
-	{"map", "map.db", newMapStore},
-	{"map/memory", ":memory:", newMapStore},
+	{"badger", "badger.db", NewBadgerStore},
+	{"bbolt", "bbolt.db", NewBboltStore},
+	{"bolt", "bolt.db", NewBboltStore},
+	{"leveldb", "leveldb.db", NewLevelDBStore},
+	{"kv", "kv.db", NewKVStore},
+	{"buntdb", "buntdb.db", NewBuntdbStore},
+	{"rocksdb", "rocksdb.db", NewRocksdbStore},
+	{"btree", "btree.db", NewBTreeStore},
+	{"btree/memory", ":memory:", NewBTreeStore},
+	{"map", "map.db", NewMapStore},
+	{"map/memory", ":memory:", NewMapStore},
 }
 
 func prefixKey(i int) []byte {
