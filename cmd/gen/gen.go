@@ -68,7 +68,7 @@ func main() {
 			if v2 == "" {
 				v2 = "|" + op + "|" + took + "|"
 			} else {
-				v2 = v1 + took + "|"
+				v2 = v2 + took + "|"
 			}
 			fsyncTime[op] = v2
 		} else {
@@ -89,7 +89,7 @@ func main() {
 			if v2 == "" {
 				v2 = "|" + op + "|" + took + "|"
 			} else {
-				v2 = v1 + took + "|"
+				v2 = v2 + took + "|"
 			}
 			nofsyncTime[op] = v2
 		}
