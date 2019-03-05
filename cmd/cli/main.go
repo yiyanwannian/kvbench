@@ -137,15 +137,16 @@ func main() {
 		}
 		wg.Wait()
 		close(ch)
-		d := int64(time.Since(start))
+		dur := time.Since(start)
+		d := int64(dur)
 
 		if setCount == 0 {
-			fmt.Printf("%s setmixed rate: 0 op/s, mean: 0 ns\n", name)
+			fmt.Printf("%s setmixed rate: -1 op/s, mean: -1 ns, took: %d s\n", name, int(dur.Seconds()))
 		} else {
-			fmt.Printf("%s setmixed rate: %d op/s, mean: %d ns\n", name, int64(setCount)*1e6/(d/1e3), d/int64((*n)*int(setCount)))
+			fmt.Printf("%s setmixed rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(setCount)*1e6/(d/1e3), d/int64((*n)*int(setCount)), int(dur.Seconds()))
 		}
-		fmt.Printf("%s setmixed rate: %d op/s, mean: %d ns\n", name, int64(setCount)*1e6/(d/1e3), d/int64((*n)*int(setCount)))
-		fmt.Printf("%s getmixed rate: %d op/s, mean: %d ns\n", name, int64(*n)*1e6/(d/1e3), d/int64((*n)*(*c)))
+		fmt.Printf("%s setmixed rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(setCount)*1e6/(d/1e3), d/int64((*n)*int(setCount)), int(dur.Seconds()))
+		fmt.Printf("%s getmixed rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(*n)*1e6/(d/1e3), d/int64((*n)*(*c)), int(dur.Seconds()))
 	}
 
 	// test del
