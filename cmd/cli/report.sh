@@ -21,10 +21,4 @@ do
     echo "${i}/fsync,${data}" >> benchmarks/fsync_throughputs.csv
     data=`grep -e ^${i}/nofsync  benchmarks/test.log|awk '{print $7}'|xargs| tr ' ' ','`
     echo "${i}/fsync,${data}" >> benchmarks/fsync_time.csv
-
-	# grep "${i}/nofsync set rate" benchmarks/test.log | awk '{print $1","$4}' >> benchmarks/nofsync_set_throughputs.csv
-    # grep "${i}/nofsync set rate" benchmarks/test.log | awk '{print $1","$7}' >> benchmarks/nofsync_set_time.csv
-
-    # grep "${i}/fsync set rate" benchmarks/test.log | awk '{print $1","$4}' >> benchmarks/fsync_throughputs.csv
-    # grep "${i}/fsync set rate" benchmarks/test.log | awk '{print $1","$7}' >> benchmarks/fsync_time.csv
 done
