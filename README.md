@@ -25,7 +25,7 @@ Features:
 - Compatible with Redis clients
 
 
-## Latest Test Result
+## HDD benchmark
 
 ### nofsync
 
