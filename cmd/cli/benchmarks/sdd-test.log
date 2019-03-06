@@ -1,0 +1,141 @@
+n=1000000, c=20
+badger 2019/03/05 17:09:44 INFO: All 0 tables opened in 0s
+badger/nofsync set rate: 76760 op/s, mean: 651 ns, took: 13 s
+badger/nofsync get rate: 454835 op/s, mean: 109 ns, took: 2 s
+badger/nofsync setmixed rate: 4566 op/s, mean: 218995 ns, took: 2 s
+badger/nofsync getmixed rate: 395796 op/s, mean: 126 ns, took: 2 s
+badger 2019/03/05 17:10:03 DEBUG: Storing value log head: {Fid:2 Len:48 Offset:13545244}
+badger/nofsync del rate: 83427 op/s, mean: 599 ns, took: 11 s
+n=1000000, c=20
+bbolt/nofsync set rate: 12690 op/s, mean: 3939 ns, took: 78 s
+bbolt/nofsync get rate: 405501 op/s, mean: 123 ns, took: 2 s
+bbolt/nofsync setmixed rate: 8324 op/s, mean: 120129 ns, took: 13 s
+bbolt/nofsync getmixed rate: 72929 op/s, mean: 685 ns, took: 13 s
+bbolt/nofsync del rate: 3513 op/s, mean: 14232 ns, took: 284 s
+n=1000000, c=20
+bolt/nofsync set rate: 13329 op/s, mean: 3751 ns, took: 75 s
+bolt/nofsync get rate: 435838 op/s, mean: 114 ns, took: 2 s
+bolt/nofsync setmixed rate: 9083 op/s, mean: 110092 ns, took: 4 s
+bolt/nofsync getmixed rate: 234612 op/s, mean: 213 ns, took: 4 s
+bolt/nofsync del rate: 2922 op/s, mean: 17107 ns, took: 342 s
+n=1000000, c=20
+leveldb/nofsync set rate: 128174 op/s, mean: 390 ns, took: 7 s
+leveldb/nofsync get rate: 404430 op/s, mean: 123 ns, took: 2 s
+leveldb/nofsync setmixed rate: 17123 op/s, mean: 58398 ns, took: 3 s
+leveldb/nofsync getmixed rate: 264450 op/s, mean: 189 ns, took: 3 s
+leveldb/nofsync del rate: 164755 op/s, mean: 303 ns, took: 6 s
+n=1000000, c=20
+2019/03/05 17:23:57 main.go:216: [0;33m[warning] kv store is unstable[0m
+kv/nofsync set rate: 3683 op/s, mean: 13573 ns, took: 271 s
+kv/nofsync get rate: 17736 op/s, mean: 2819 ns, took: 56 s
+kv/nofsync setmixed rate: 700 op/s, mean: 1427908 ns, took: 71 s
+kv/nofsync getmixed rate: 13987 op/s, mean: 3574 ns, took: 71 s
+kv/nofsync del rate: 7042 op/s, mean: 7100 ns, took: 142 s
+n=1000000, c=20
+buntdb/nofsync set rate: 109943 op/s, mean: 454 ns, took: 9 s
+buntdb/nofsync get rate: 3054694 op/s, mean: 16 ns, took: 0 s
+buntdb/nofsync setmixed rate: 14128 op/s, mean: 70777 ns, took: 3 s
+buntdb/nofsync getmixed rate: 282241 op/s, mean: 177 ns, took: 3 s
+buntdb/nofsync del rate: 187054 op/s, mean: 267 ns, took: 5 s
+n=1000000, c=20
+rocksdb/nofsync set rate: 463219 op/s, mean: 107 ns, took: 2 s
+rocksdb/nofsync get rate: 1467525 op/s, mean: 34 ns, took: 0 s
+rocksdb/nofsync setmixed rate: 145839 op/s, mean: 6856 ns, took: 0 s
+rocksdb/nofsync getmixed rate: 1889387 op/s, mean: 26 ns, took: 0 s
+rocksdb/nofsync del rate: 611694 op/s, mean: 81 ns, took: 1 s
+n=1000000, c=20
+btree/nofsync set rate: 185225 op/s, mean: 269 ns, took: 5 s
+btree/nofsync get rate: 3555188 op/s, mean: 14 ns, took: 0 s
+btree/nofsync setmixed rate: 29296 op/s, mean: 34134 ns, took: 1 s
+btree/nofsync getmixed rate: 640031 op/s, mean: 78 ns, took: 1 s
+btree/nofsync del rate: 359934 op/s, mean: 138 ns, took: 2 s
+n=1000000, c=20
+8618:M 05 Mar 17:33:32.506 * persistance disabled
+btree/memory/nofsync set rate: 633252 op/s, mean: 78 ns, took: 1 s
+btree/memory/nofsync get rate: 4150152 op/s, mean: 12 ns, took: 0 s
+btree/memory/nofsync setmixed rate: 40860 op/s, mean: 24473 ns, took: 0 s
+btree/memory/nofsync getmixed rate: 1014941 op/s, mean: 49 ns, took: 0 s
+btree/memory/nofsync del rate: 787141 op/s, mean: 63 ns, took: 1 s
+n=1000000, c=20
+map/nofsync set rate: 215862 op/s, mean: 231 ns, took: 4 s
+map/nofsync get rate: 4706103 op/s, mean: 10 ns, took: 0 s
+map/nofsync setmixed rate: 50836 op/s, mean: 19670 ns, took: 0 s
+map/nofsync getmixed rate: 1548680 op/s, mean: 32 ns, took: 0 s
+map/nofsync del rate: 617882 op/s, mean: 80 ns, took: 1 s
+n=1000000, c=20
+8670:M 05 Mar 17:33:43.723 * persistance disabled
+map/memory/nofsync set rate: 833461 op/s, mean: 59 ns, took: 1 s
+map/memory/nofsync get rate: 4747594 op/s, mean: 10 ns, took: 0 s
+map/memory/nofsync setmixed rate: 49103 op/s, mean: 20365 ns, took: 0 s
+map/memory/nofsync getmixed rate: 1973040 op/s, mean: 25 ns, took: 0 s
+map/memory/nofsync del rate: 1190171 op/s, mean: 42 ns, took: 0 s
+n=10000, c=20
+badger 2019/03/05 17:33:46 INFO: All 0 tables opened in 0s
+badger/fsync set rate: 32124 op/s, mean: 1556 ns, took: 0 s
+badger/fsync get rate: 439483 op/s, mean: 113 ns, took: 0 s
+badger/fsync setmixed rate: 4893 op/s, mean: 204372 ns, took: 0 s
+badger/fsync getmixed rate: 129789 op/s, mean: 385 ns, took: 0 s
+badger/fsync del rate: 38229 op/s, mean: 1307 ns, took: 0 s
+n=10000, c=20
+bbolt/fsync set rate: 5413 op/s, mean: 9236 ns, took: 1 s
+bbolt/fsync get rate: 336439 op/s, mean: 148 ns, took: 0 s
+bbolt/fsync setmixed rate: 4946 op/s, mean: 202173 ns, took: 0 s
+bbolt/fsync getmixed rate: 222806 op/s, mean: 224 ns, took: 0 s
+bbolt/fsync del rate: 6990 op/s, mean: 7152 ns, took: 1 s
+n=10000, c=20
+bolt/fsync set rate: 5623 op/s, mean: 8890 ns, took: 1 s
+bolt/fsync get rate: 291307 op/s, mean: 171 ns, took: 0 s
+bolt/fsync setmixed rate: 4390 op/s, mean: 227763 ns, took: 0 s
+bolt/fsync getmixed rate: 252334 op/s, mean: 198 ns, took: 0 s
+bolt/fsync del rate: 5732 op/s, mean: 8721 ns, took: 1 s
+n=10000, c=20
+leveldb/fsync set rate: 56968 op/s, mean: 877 ns, took: 0 s
+leveldb/fsync get rate: 635404 op/s, mean: 78 ns, took: 0 s
+leveldb/fsync setmixed rate: 5913 op/s, mean: 169098 ns, took: 0 s
+leveldb/fsync getmixed rate: 609681 op/s, mean: 82 ns, took: 0 s
+leveldb/fsync del rate: 66996 op/s, mean: 746 ns, took: 0 s
+n=10000, c=20
+2019/03/05 17:33:54 main.go:216: [0;33m[warning] kv store is unstable[0m
+kv/fsync set rate: 5123 op/s, mean: 9758 ns, took: 1 s
+kv/fsync get rate: 5330 op/s, mean: 9379 ns, took: 1 s
+kv/fsync setmixed rate: 203 op/s, mean: 4914902 ns, took: 2 s
+kv/fsync getmixed rate: 4013 op/s, mean: 12459 ns, took: 2 s
+kv/fsync del rate: 7637 op/s, mean: 6546 ns, took: 1 s
+n=10000, c=20
+buntdb/fsync set rate: 7052 op/s, mean: 7089 ns, took: 1 s
+buntdb/fsync get rate: 1982160 op/s, mean: 25 ns, took: 0 s
+buntdb/fsync setmixed rate: 5083 op/s, mean: 196697 ns, took: 0 s
+buntdb/fsync getmixed rate: 86169 op/s, mean: 580 ns, took: 0 s
+buntdb/fsync del rate: 18200 op/s, mean: 2747 ns, took: 0 s
+n=10000, c=20
+rocksdb/fsync set rate: 52700 op/s, mean: 948 ns, took: 0 s
+rocksdb/fsync get rate: 3246753 op/s, mean: 15 ns, took: 0 s
+rocksdb/fsync setmixed rate: 6276 op/s, mean: 159317 ns, took: 0 s
+rocksdb/fsync getmixed rate: 3923107 op/s, mean: 12 ns, took: 0 s
+rocksdb/fsync del rate: 65530 op/s, mean: 763 ns, took: 0 s
+n=10000, c=20
+btree/fsync set rate: 8065 op/s, mean: 6199 ns, took: 1 s
+btree/fsync get rate: 3145643 op/s, mean: 15 ns, took: 0 s
+btree/fsync setmixed rate: 6033 op/s, mean: 165745 ns, took: 0 s
+btree/fsync getmixed rate: 102087 op/s, mean: 489 ns, took: 0 s
+btree/fsync del rate: 17635 op/s, mean: 2835 ns, took: 0 s
+n=10000, c=20
+8959:M 05 Mar 17:34:06.947 * persistance disabled
+btree/memory/fsync set rate: 614477 op/s, mean: 81 ns, took: 0 s
+btree/memory/fsync get rate: 3512469 op/s, mean: 14 ns, took: 0 s
+btree/memory/fsync setmixed rate: 32896 op/s, mean: 30399 ns, took: 0 s
+btree/memory/fsync getmixed rate: 850051 op/s, mean: 58 ns, took: 0 s
+btree/memory/fsync del rate: 868734 op/s, mean: 57 ns, took: 0 s
+n=10000, c=20
+map/fsync set rate: 7841 op/s, mean: 6376 ns, took: 1 s
+map/fsync get rate: 3852080 op/s, mean: 12 ns, took: 0 s
+map/fsync setmixed rate: 7291 op/s, mean: 137151 ns, took: 0 s
+map/fsync getmixed rate: 120716 op/s, mean: 414 ns, took: 0 s
+map/fsync del rate: 17363 op/s, mean: 2879 ns, took: 0 s
+n=10000, c=20
+9000:M 05 Mar 17:34:08.950 * persistance disabled
+map/memory/fsync set rate: 913575 op/s, mean: 54 ns, took: 0 s
+map/memory/fsync get rate: 3629764 op/s, mean: 13 ns, took: 0 s
+map/memory/fsync setmixed rate: 63406 op/s, mean: 15771 ns, took: 0 s
+map/memory/fsync getmixed rate: 1495438 op/s, mean: 33 ns, took: 0 s
+map/memory/fsync del rate: 956571 op/s, mean: 52 ns, took: 0 s
