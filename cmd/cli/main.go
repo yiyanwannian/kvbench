@@ -233,6 +233,11 @@ func getStore(s string, fsync bool, path string) (kvbench.Store, string, error) 
 			path = "rocksdb.db"
 		}
 		store, err = kvbench.NewRocksdbStore(path, fsync)
+	case "pebble":
+		if path == "" {
+			path = "pebble.db"
+		}
+		store, err = kvbench.NewRocksdbStore(path, fsync)
 	}
 
 	return store, path, err
