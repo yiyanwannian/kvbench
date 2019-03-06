@@ -90,6 +90,11 @@ func Start(opts Options) error {
 			path = "rocksdb.db"
 		}
 		store, err = NewRocksdbStore(path, fsync)
+	case "pebble":
+		if path == "" {
+			path = "pebble.db"
+		}
+		store, err = NewPebbleStore(path, fsync)
 	}
 
 	if err != nil {

@@ -105,11 +105,14 @@ func (s *rocksdbStore) Keys(pattern []byte, limit int, withvals bool) ([][]byte,
 		copy(k, key.Data())
 		key.Free()
 
+		keys = append(keys, k)
+
 		if withvals {
 			value := it.Value()
 			v := make([]byte, value.Size())
 			copy(v, value.Data())
 			value.Free()
+			vals = append(vals, v)
 		}
 	}
 
