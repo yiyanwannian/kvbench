@@ -1,6 +1,5 @@
 #!/bin/sh
 
-COUNT=1000000
 SIZE=256
 
 STORES=("badger" "bbolt" "bolt" "leveldb" "kv" "buntdb" "rocksdb" "btree" "btree/memory" "map" "map/memory")
@@ -16,7 +15,7 @@ export LD_LIBRARY_PATH=/usr/local/lib
 echo "=========== test nofsync ==========="
 for i in "${STORES[@]}"
 do
-	./main -n ${COUNT} -size ${SIZE} -s "$i" >> benchmarks/test.log 2>&1
+	./main -d 1m -size ${SIZE} -s "$i" >> benchmarks/test.log 2>&1
 done
 
 `rm  -f .*`
@@ -25,10 +24,9 @@ done
 echo ""
 echo "=========== test fsync ==========="
 
-COUNT=10000
 for i in "${STORES[@]}"
 do
-	./main -n ${COUNT} -size ${SIZE} -s "$i" -fsync >> benchmarks/test.log 2>&1
+	./main -d 1m -size ${SIZE} -s "$i" -fsync >> benchmarks/test.log 2>&1
 done
 
 `rm  -f .*`
