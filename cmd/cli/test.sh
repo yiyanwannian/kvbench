@@ -29,5 +29,5 @@ do
 	./main -d 1m -size ${SIZE} -s "$i" -fsync >> benchmarks/test.log 2>&1
 done
 
-`rm  -f .*`
+`rm  -f .*` 
 `rm  -fr *.db`
