@@ -15,17 +15,17 @@ import (
 )
 
 var (
-	n     = flag.Int("n", 10000, "count")
-	c     = flag.Int("c", runtime.GOMAXPROCS(-1), "concurrent goroutines")
-	size  = flag.Int("size", 256, "data size")
-	fsync = flag.Bool("fsync", false, "fsync")
-	s     = flag.String("s", "map", "store type")
+	duration = flag.Duration("d", time.Minute, "test duration for each case")
+	c        = flag.Int("c", runtime.GOMAXPROCS(-1), "concurrent goroutines")
+	size     = flag.Int("size", 256, "data size")
+	fsync    = flag.Bool("fsync", false, "fsync")
+	s        = flag.String("s", "map", "store type")
 )
 
 func main() {
 	flag.Parse()
 
-	fmt.Printf("n=%d, c=%d\n", *n, *c)
+	fmt.Printf("duration=%v, c=%d\n", *duration, *c)
 
 	var memory bool
 	var path string
@@ -54,29 +54,40 @@ func main() {
 	}
 
 	data := make([]byte, *size)
-	numPerG := *n / (*c)
 
 	// test set
 	{
 		var wg sync.WaitGroup
 		wg.Add(*c)
 
+		var stop bool
+		time.AfterFunc(*duration, func() {
+			stop = true
+		})
+		counts := make([]int, *c)
 		start := time.Now()
 		for j := 0; j < *c; j++ {
 			index := uint64(j)
 			go func() {
+				count := 0
 				i := index
-				for k := 0; k < numPerG; k++ {
+				for k := 0; !stop; k++ {
 					store.Set(genKey(i), data)
-					i += index
+					i += uint64(*c)
+					count++
 				}
+				counts[index] = count
 				wg.Done()
 			}()
 		}
 		wg.Wait()
 		dur := time.Since(start)
 		d := int64(dur)
-		fmt.Printf("%s set rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(*n)*1e6/(d/1e3), d/int64((*n)*(*c)), int(dur.Seconds()))
+		var n int
+		for _, count := range counts {
+			n += count
+		}
+		fmt.Printf("%s set rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
 	}
 
 	// test get
@@ -84,22 +95,38 @@ func main() {
 		var wg sync.WaitGroup
 		wg.Add(*c)
 
+		var stop bool
+		time.AfterFunc(*duration, func() {
+			stop = true
+		})
+
+		counts := make([]int, *c)
 		start := time.Now()
 		for j := 0; j < *c; j++ {
 			index := uint64(j)
 			go func() {
+				var count int
 				i := index
-				for k := 0; k < numPerG; k++ {
-					store.Get(genKey(i))
-					i += index
+				for k := 0; !stop; k++ {
+					_, ok, _ := store.Get(genKey(i))
+					if !ok {
+						i = index
+					}
+					i += uint64(*c)
+					count++
 				}
+				counts[index] = count
 				wg.Done()
 			}()
 		}
 		wg.Wait()
 		dur := time.Since(start)
 		d := int64(dur)
-		fmt.Printf("%s get rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(*n)*1e6/(d/1e3), d/int64((*n)*(*c)), int(dur.Seconds()))
+		var n int
+		for _, count := range counts {
+			n += count
+		}
+		fmt.Printf("%s get rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
 	}
 
 	// test multiple get/one set
@@ -111,7 +138,6 @@ func main() {
 
 		var setCount uint64
 
-		start := time.Now()
 		go func() {
 			i := uint64(0)
 			for {
@@ -125,15 +151,27 @@ func main() {
 				}
 			}
 		}()
+
+		var stop bool
+		time.AfterFunc(*duration, func() {
+			stop = true
+		})
+		counts := make([]int, *c)
+		start := time.Now()
 		for j := 0; j < *c; j++ {
 			index := uint64(j)
 			go func() {
-
+				var count int
 				i := index
-				for k := 0; k < numPerG; k++ {
-					store.Get(genKey(i))
-					i += index
+				for k := 0; !stop; k++ {
+					_, ok, _ := store.Get(genKey(i))
+					if !ok {
+						i = index
+					}
+					i += uint64(*c)
+					count++
 				}
+				counts[index] = count
 				wg.Done()
 			}()
 		}
@@ -141,13 +179,17 @@ func main() {
 		close(ch)
 		dur := time.Since(start)
 		d := int64(dur)
+		var n int
+		for _, count := range counts {
+			n += count
+		}
 
 		if setCount == 0 {
 			fmt.Printf("%s setmixed rate: -1 op/s, mean: -1 ns, took: %d s\n", name, int(dur.Seconds()))
 		} else {
 			fmt.Printf("%s setmixed rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(setCount)*1e6/(d/1e3), d/int64(setCount), int(dur.Seconds()))
 		}
-		fmt.Printf("%s getmixed rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(*n)*1e6/(d/1e3), d/int64((*n)*(*c)), int(dur.Seconds()))
+		fmt.Printf("%s getmixed rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
 	}
 
 	// test del
@@ -155,22 +197,36 @@ func main() {
 		var wg sync.WaitGroup
 		wg.Add(*c)
 
+		var stop bool
+		time.AfterFunc(*duration, func() {
+			stop = true
+		})
+
+		counts := make([]int, *c)
 		start := time.Now()
 		for j := 0; j < *c; j++ {
 			index := uint64(j)
 			go func() {
+				var count int
 				i := index
-				for k := 0; k < numPerG; k++ {
+				for k := 0; !stop; k++ {
 					store.Del(genKey(i))
-					i += index
+					i += uint64(*c)
+					count++
 				}
+				counts[index] = count
 				wg.Done()
 			}()
 		}
 		wg.Wait()
 		dur := time.Since(start)
 		d := int64(dur)
-		fmt.Printf("%s del rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(*n)*1e6/(d/1e3), d/int64((*n)*(*c)), int(dur.Seconds()))
+		var n int
+		for _, count := range counts {
+			n += count
+		}
+
+		fmt.Printf("%s del rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
 	}
 }
 

@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	log = flag.String("log", "../cli/benchmarks/sdd-test.log", "log file")
+	log = flag.String("log", "../cli/benchmarks/hdd-test.log", "log file")
 )
 
 func main() {
