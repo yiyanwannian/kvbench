@@ -95,6 +95,11 @@ func Start(opts Options) error {
 			path = "pebble.db"
 		}
 		store, err = NewPebbleStore(path, fsync)
+	case "pogreb":
+		if path == "" {
+			path = "pogreb.db"
+		}
+		store, err = NewPogrebStore(path, fsync)
 	}
 
 	if err != nil {

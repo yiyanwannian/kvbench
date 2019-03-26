@@ -22,6 +22,7 @@ var stores = []struct {
 	{"buntdb", "buntdb.db", NewBuntdbStore},
 	{"rocksdb", "rocksdb.db", NewRocksdbStore},
 	{"pebble", "pebble.db", NewPebbleStore},
+	{"pogreb", "pogreb.db", NewPogrebStore},
 	{"btree", "btree.db", NewBTreeStore},
 	{"btree/memory", ":memory:", NewBTreeStore},
 	{"map", "map.db", NewMapStore},
