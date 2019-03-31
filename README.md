@@ -20,6 +20,8 @@ Features:
   - [cznic/kv](https://github.com/cznic/kv)
   - [rocksdb](https://github.com/tecbot/gorocksdb)
   - [pebble](https://github.com/petermattis/pebble)
+  - [pogreb](https://github.com/akrylysov/pogreb)
+  - [nutsdb](https://github.com/xujiajun/nutsdb)
   - map (in-memory) with [AOF persistence](https://redis.io/topics/persistence)
   - btree (in-memory) with [AOF persistence](https://redis.io/topics/persistence)
 - Option to disable fsync
