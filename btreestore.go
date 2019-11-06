@@ -29,7 +29,7 @@ func NewBTreeStore(path string, fsync bool) (Store, error) {
 	var err error
 	var aof *AOF
 	if path == ":memory:" {
-		log.Printf("persistance disabled")
+		return nil, errMemoryNotAllowed
 	} else {
 		var count int
 		start := time.Now()
