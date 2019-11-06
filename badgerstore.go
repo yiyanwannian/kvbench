@@ -23,9 +23,7 @@ func NewBadgerStore(path string, fsync bool) (Store, error) {
 		return nil, errMemoryNotAllowed
 	}
 
-	opts := badger.DefaultOptions
-	opts.Dir = path
-	opts.ValueDir = path
+	opts := badger.DefaultOptions(path)
 	opts.SyncWrites = fsync
 	db, err := badger.Open(opts)
 	if err != nil {

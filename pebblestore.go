@@ -4,14 +4,13 @@ import (
 	"bytes"
 	"sync"
 
-	"github.com/petermattis/pebble"
-	"github.com/petermattis/pebble/db"
+	"github.com/cockroachdb/pebble"
 )
 
 type pebbleStore struct {
 	mu sync.RWMutex
 	db *pebble.DB
-	wo *db.WriteOptions
+	wo *pebble.WriteOptions
 }
 
 func pebbleKey(key []byte) []byte {
@@ -26,12 +25,12 @@ func NewPebbleStore(path string, fsync bool) (Store, error) {
 		return nil, errMemoryNotAllowed
 	}
 
-	opts := &db.Options{}
+	opts := &pebble.Options{}
 	if !fsync {
 		opts.DisableWAL = true
 	}
 
-	wo := &db.WriteOptions{}
+	wo := &pebble.WriteOptions{}
 	wo.Sync = fsync
 
 	db, err := pebble.Open(path, opts)
@@ -89,7 +88,7 @@ func (s *pebbleStore) Keys(pattern []byte, limit int, withvals bool) ([][]byte, 
 	var keys [][]byte
 	var vals [][]byte
 
-	io := &db.IterOptions{}
+	io := &pebble.IterOptions{}
 	it := s.db.NewIter(io)
 	defer it.Close()
 	it.SeekGE(pattern)
