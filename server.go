@@ -100,6 +100,11 @@ func Start(opts Options) error {
 			path = "pogreb.db"
 		}
 		store, err = NewPogrebStore(path, fsync)
+	case "nutsdb":
+		if path == "" {
+			path = "nutsdb.db"
+		}
+		store, err = NewNutsdbStore(path, fsync)
 	}
 
 	if err != nil {
