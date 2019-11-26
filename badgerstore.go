@@ -3,7 +3,7 @@ package kvbench
 import (
 	"sync"
 
-	"github.com/dgraph-io/badger"
+	"github.com/dgraph-io/badger/v2"
 )
 
 type badgerStore struct {
@@ -19,11 +19,11 @@ func badgerKey(key []byte) []byte {
 }
 
 func NewBadgerStore(path string, fsync bool) (Store, error) {
+	opts := badger.DefaultOptions(path)
 	if path == ":memory:" {
-		return nil, errMemoryNotAllowed
+		opts.InMemory = true
 	}
 
-	opts := badger.DefaultOptions(path)
 	opts.SyncWrites = fsync
 	db, err := badger.Open(opts)
 	if err != nil {
