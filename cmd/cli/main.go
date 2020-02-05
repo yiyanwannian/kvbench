@@ -294,6 +294,17 @@ func getStore(s string, fsync bool, path string) (kvbench.Store, string, error) 
 			path = "pebble.db"
 		}
 		store, err = kvbench.NewRocksdbStore(path, fsync)
+	case "pogreb":
+		if path == "" {
+			path = "pogreb.db"
+		}
+		store, err = kvbench.NewPogrebStore(path, fsync)
+	case "nutsdb":
+		if path == "" {
+			path = "nutsdb.db"
+		}
+		store, err = kvbench.NewNutsdbStore(path, fsync)
+
 	}
 
 	return store, path, err
