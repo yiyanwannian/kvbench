@@ -22,9 +22,9 @@ require (
 	github.com/facebookgo/ensure v0.0.0-20160127193407-b4ab57deab51 // indirect
 	github.com/facebookgo/stack v0.0.0-20160209184415-751773369052 // indirect
 	github.com/facebookgo/subset v0.0.0-20150612182917-8dac2c3c4870 // indirect
-	github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1 // indirect
 	github.com/golang/protobuf v1.3.3 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/recoilme/sniper v0.1.3
 	github.com/remyoudompheng/bigfft v0.0.0-20190728182440-6a916e37a237 // indirect
 	github.com/smallnest/log v0.0.0-20190128090703-5dc5752d8772
 	github.com/syndtr/goleveldb v1.0.0
@@ -32,7 +32,6 @@ require (
 	github.com/tidwall/btree v0.0.0-20191029221954-400434d76274
 	github.com/tidwall/buntdb v1.1.2
 	github.com/tidwall/gjson v1.4.0 // indirect
-	github.com/tidwall/kvbench v0.0.0-20170125162528-a63fe55334f3
 	github.com/tidwall/match v1.0.1
 	github.com/tidwall/pretty v1.0.1 // indirect
 	github.com/tidwall/redcon v1.2.0

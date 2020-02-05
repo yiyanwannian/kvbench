@@ -4,11 +4,11 @@ import (
 	"flag"
 	"os"
 
-	"github.com/tidwall/kvbench"
+	"github.com/smallnest/kvbench"
 	"github.com/tidwall/redlog"
 )
 
-var log = redlog.New(os.Stderr)
+var log = redlog.New(os.Stderr, nil)
 
 func main() {
 	var opts kvbench.Options

@@ -304,7 +304,11 @@ func getStore(s string, fsync bool, path string) (kvbench.Store, string, error) 
 			path = "nutsdb.db"
 		}
 		store, err = kvbench.NewNutsdbStore(path, fsync)
-
+	case "sniper":
+		if path == "" {
+			path = "sniper.db"
+		}
+		store, err = kvbench.NewSniperStore(path, fsync)
 	}
 
 	return store, path, err

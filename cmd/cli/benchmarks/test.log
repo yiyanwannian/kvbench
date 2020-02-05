@@ -1,87 +1,94 @@
 duration=1m0s, c=4
-badger 2020/02/05 17:43:55 INFO: All 0 tables opened in 0s
-badger 2020/02/05 17:44:21 DEBUG: Flushing memtable, mt.size=60997858 size of flushChan: 0
-badger 2020/02/05 17:44:21 DEBUG: Storing value log head: {Fid:1 Len:35 Offset:158499987}
-badger 2020/02/05 17:44:47 DEBUG: Flushing memtable, mt.size=61002946 size of flushChan: 0
-badger 2020/02/05 17:44:47 DEBUG: Storing value log head: {Fid:3 Len:35 Offset:158999667}
-badger/nofsync set rate: 38538 op/s, mean: 6487 ns, took: 60 s
-badger/nofsync get rate: 469281 op/s, mean: 532 ns, took: 60 s
-badger 2020/02/05 17:46:46 DEBUG: Flushing memtable, mt.size=60999248 size of flushChan: 0
-badger 2020/02/05 17:46:46 DEBUG: Storing value log head: {Fid:5 Len:35 Offset:158999985}
-badger/nofsync setmixed rate: 12863 op/s, mean: 77740 ns, took: 60 s
-badger/nofsync getmixed rate: 177960 op/s, mean: 1404 ns, took: 60 s
-badger 2020/02/05 17:47:17 DEBUG: Flushing memtable, mt.size=50005921 size of flushChan: 0
-badger 2020/02/05 17:47:17 DEBUG: Storing value log head: {Fid:7 Len:35 Offset:30499985}
-badger 2020/02/05 17:47:41 DEBUG: Flushing memtable, mt.size=49000597 size of flushChan: 0
-badger 2020/02/05 17:47:41 DEBUG: Storing value log head: {Fid:9 Len:35 Offset:30499985}
-badger 2020/02/05 17:47:45 INFO: Got compaction priority: {level:0 score:1 dropPrefix:[]}
-badger 2020/02/05 17:47:45 INFO: Running for level: 0
-badger 2020/02/05 17:47:48 DEBUG: LOG Compact. Added 396705 keys. Skipped 4603309 keys. Iteration took: 3.748495378s
-badger 2020/02/05 17:47:49 DEBUG: Discard stats: map[0:141500283 1:141500283 2:141500283 3:117654703 4:53078631 5:141500283 6:23845297]
-badger 2020/02/05 17:47:49 INFO: LOG Compact 0->1, del 5 tables, add 1 tables, took 3.810290881s
-badger 2020/02/05 17:47:49 INFO: Compaction for level: 0 DONE
-badger/nofsync del rate: 41418 op/s, mean: 6035 ns, took: 60 s
+badger 2020/02/05 18:53:53 INFO: All 0 tables opened in 0s
+badger 2020/02/05 18:53:53 INFO: Replaying file id: 0 at offset: 0
+badger 2020/02/05 18:53:54 INFO: Replay took: 1.567954102s
+badger 2020/02/05 18:53:54 INFO: Replaying file id: 1 at offset: 0
+badger 2020/02/05 18:53:55 INFO: Replay took: 682.191358ms
+badger 2020/02/05 18:53:55 DEBUG: Value log discard stats empty
+badger 2020/02/05 18:54:05 DEBUG: Storing value log head: {Fid:1 Len:35 Offset:190348959}
+badger 2020/02/05 18:54:05 DEBUG: Flushing memtable, mt.size=67108962 size of flushChan: 0
+badger 2020/02/05 18:54:21 DEBUG: Flushing memtable, mt.size=37535599 size of flushChan: 0
+badger 2020/02/05 18:54:21 DEBUG: Storing value log head: {Fid:2 Len:35 Offset:158999985}
+badger 2020/02/05 18:54:44 DEBUG: Flushing memtable, mt.size=61001265 size of flushChan: 0
+badger 2020/02/05 18:54:44 DEBUG: Storing value log head: {Fid:4 Len:35 Offset:158999985}
+badger/nofsync set rate: 40523 op/s, mean: 6169 ns, took: 60 s
+badger/nofsync get rate: 447617 op/s, mean: 558 ns, took: 60 s
+badger 2020/02/05 18:56:35 DEBUG: Flushing memtable, mt.size=61004357 size of flushChan: 0
+badger 2020/02/05 18:56:35 DEBUG: Storing value log head: {Fid:6 Len:35 Offset:158999985}
+badger/nofsync setmixed rate: 13250 op/s, mean: 75471 ns, took: 60 s
+badger/nofsync getmixed rate: 172656 op/s, mean: 1447 ns, took: 60 s
+badger 2020/02/05 18:57:12 DEBUG: Flushing memtable, mt.size=51718019 size of flushChan: 0
+badger 2020/02/05 18:57:12 DEBUG: Storing value log head: {Fid:8 Len:35 Offset:30499863}
+badger 2020/02/05 18:57:16 INFO: Got compaction priority: {level:0 score:1 dropPrefix:[]}
+badger 2020/02/05 18:57:16 INFO: Running for level: 0
+badger 2020/02/05 18:57:26 DEBUG: LOG Compact. Added 1658053 keys. Skipped 3057419 keys. Iteration took: 9.701875144s
+badger 2020/02/05 18:57:26 DEBUG: Discard stats: map[0:141500283 1:202475746 2:83485566 5:19379274 6:141500283 7:58013868]
+badger 2020/02/05 18:57:26 INFO: LOG Compact 0->1, del 5 tables, add 1 tables, took 9.930297787s
+badger 2020/02/05 18:57:26 INFO: Compaction for level: 0 DONE
+badger 2020/02/05 18:57:36 DEBUG: Flushing memtable, mt.size=49000305 size of flushChan: 0
+badger 2020/02/05 18:57:36 DEBUG: Storing value log head: {Fid:10 Len:35 Offset:30499863}
+badger/nofsync del rate: 43022 op/s, mean: 5810 ns, took: 60 s
 duration=1m0s, c=4
-bbolt/nofsync set rate: 17208 op/s, mean: 14527 ns, took: 60 s
-bbolt/nofsync get rate: 695965 op/s, mean: 359 ns, took: 60 s
-bbolt/nofsync setmixed rate: 9754 op/s, mean: 102519 ns, took: 60 s
-bbolt/nofsync getmixed rate: 445885 op/s, mean: 560 ns, took: 60 s
-bbolt/nofsync del rate: 5620 op/s, mean: 44481 ns, took: 60 s
+bbolt/nofsync set rate: 18075 op/s, mean: 13831 ns, took: 60 s
+bbolt/nofsync get rate: 725436 op/s, mean: 344 ns, took: 60 s
+bbolt/nofsync setmixed rate: 10087 op/s, mean: 99129 ns, took: 60 s
+bbolt/nofsync getmixed rate: 473240 op/s, mean: 528 ns, took: 60 s
+bbolt/nofsync del rate: 5840 op/s, mean: 42802 ns, took: 60 s
 duration=1m0s, c=4
-bolt/nofsync set rate: 18590 op/s, mean: 13447 ns, took: 60 s
-bolt/nofsync get rate: 684159 op/s, mean: 365 ns, took: 60 s
-bolt/nofsync setmixed rate: 8972 op/s, mean: 111457 ns, took: 60 s
-bolt/nofsync getmixed rate: 425328 op/s, mean: 587 ns, took: 60 s
-bolt/nofsync del rate: 5251 op/s, mean: 47605 ns, took: 60 s
+bolt/nofsync set rate: 19621 op/s, mean: 12741 ns, took: 60 s
+bolt/nofsync get rate: 724024 op/s, mean: 345 ns, took: 60 s
+bolt/nofsync setmixed rate: 7740 op/s, mean: 129196 ns, took: 60 s
+bolt/nofsync getmixed rate: 366145 op/s, mean: 682 ns, took: 60 s
+bolt/nofsync del rate: 4743 op/s, mean: 52703 ns, took: 60 s
 duration=1m0s, c=4
-leveldb/nofsync set rate: 113661 op/s, mean: 2199 ns, took: 60 s
-leveldb/nofsync get rate: 431804 op/s, mean: 578 ns, took: 60 s
-leveldb/nofsync setmixed rate: 23347 op/s, mean: 42831 ns, took: 60 s
-leveldb/nofsync getmixed rate: 184105 op/s, mean: 1357 ns, took: 60 s
-leveldb/nofsync del rate: 72104 op/s, mean: 3467 ns, took: 60 s
+leveldb/nofsync set rate: 101667 op/s, mean: 2459 ns, took: 60 s
+leveldb/nofsync get rate: 400301 op/s, mean: 624 ns, took: 60 s
+leveldb/nofsync setmixed rate: 21330 op/s, mean: 46882 ns, took: 60 s
+leveldb/nofsync getmixed rate: 163738 op/s, mean: 1526 ns, took: 60 s
+leveldb/nofsync del rate: 65125 op/s, mean: 3838 ns, took: 60 s
 duration=1m0s, c=4
-2020/02/05 17:59:55 main.go:272: [0;33m[warning] kv store is unstable[0m
-kv/nofsync set rate: 11981 op/s, mean: 20865 ns, took: 60 s
-kv/nofsync get rate: 25681 op/s, mean: 9734 ns, took: 60 s
-kv/nofsync setmixed rate: 4233 op/s, mean: 236232 ns, took: 60 s
-kv/nofsync getmixed rate: 16932 op/s, mean: 14764 ns, took: 60 s
-kv/nofsync del rate: 9896 op/s, mean: 25260 ns, took: 60 s
+2020/02/05 19:09:55 main.go:272: [0;33m[warning] kv store is unstable[0m
+kv/nofsync set rate: 11349 op/s, mean: 22028 ns, took: 60 s
+kv/nofsync get rate: 27704 op/s, mean: 9023 ns, took: 60 s
+kv/nofsync setmixed rate: 4388 op/s, mean: 227877 ns, took: 60 s
+kv/nofsync getmixed rate: 17555 op/s, mean: 14240 ns, took: 60 s
+kv/nofsync del rate: 10341 op/s, mean: 24173 ns, took: 60 s
 duration=1m0s, c=4
-buntdb/nofsync set rate: 31964 op/s, mean: 7821 ns, took: 60 s
-buntdb/nofsync get rate: 1551729 op/s, mean: 161 ns, took: 60 s
-buntdb/nofsync setmixed rate: 8715 op/s, mean: 114740 ns, took: 60 s
-buntdb/nofsync getmixed rate: 49884 op/s, mean: 5011 ns, took: 60 s
-buntdb/nofsync del rate: 168056 op/s, mean: 1487 ns, took: 60 s
+buntdb/nofsync set rate: 32496 op/s, mean: 7693 ns, took: 60 s
+buntdb/nofsync get rate: 1606282 op/s, mean: 155 ns, took: 60 s
+buntdb/nofsync setmixed rate: 8400 op/s, mean: 119037 ns, took: 60 s
+buntdb/nofsync getmixed rate: 41694 op/s, mean: 5995 ns, took: 60 s
+buntdb/nofsync del rate: 300969 op/s, mean: 830 ns, took: 60 s
 duration=1m0s, c=4
-pebble/nofsync set rate: 67891 op/s, mean: 3682 ns, took: 60 s
-pebble/nofsync get rate: 273708 op/s, mean: 913 ns, took: 60 s
-pebble/nofsync setmixed rate: 49001 op/s, mean: 20407 ns, took: 60 s
-pebble/nofsync getmixed rate: 160048 op/s, mean: 1562 ns, took: 60 s
-pebble/nofsync del rate: 75662 op/s, mean: 3304 ns, took: 60 s
+pebble/nofsync set rate: 69233 op/s, mean: 3610 ns, took: 60 s
+pebble/nofsync get rate: 284087 op/s, mean: 880 ns, took: 60 s
+pebble/nofsync setmixed rate: 50527 op/s, mean: 19791 ns, took: 60 s
+pebble/nofsync getmixed rate: 162078 op/s, mean: 1542 ns, took: 60 s
+pebble/nofsync del rate: 77665 op/s, mean: 3218 ns, took: 60 s
 duration=1m0s, c=4
-panic: unknown store type: pogreb
-
-goroutine 1 [running]:
-main.main()
-	/Users/yuepan/go/src/github.com/smallnest/kvbench/cmd/cli/main.go:40 +0x1b6d
+pogreb/nofsync set rate: 59722 op/s, mean: 4186 ns, took: 60 s
+pogreb/nofsync get rate: 4215716 op/s, mean: 59 ns, took: 60 s
+pogreb/nofsync setmixed rate: 43986 op/s, mean: 22734 ns, took: 60 s
+pogreb/nofsync getmixed rate: 182186 op/s, mean: 1372 ns, took: 60 s
+pogreb/nofsync del rate: 3709 op/s, mean: 67397 ns, took: 60 s
 duration=1m0s, c=4
-panic: unknown store type: nutsdb
-
-goroutine 1 [running]:
-main.main()
-	/Users/yuepan/go/src/github.com/smallnest/kvbench/cmd/cli/main.go:40 +0x1b6d
+nutsdb/nofsync set rate: 92124 op/s, mean: 2713 ns, took: 60 s
+nutsdb/nofsync get rate: 949863 op/s, mean: 263 ns, took: 60 s
+nutsdb/nofsync setmixed rate: 36816 op/s, mean: 27162 ns, took: 60 s
+nutsdb/nofsync getmixed rate: 172504 op/s, mean: 1449 ns, took: 60 s
+nutsdb/nofsync del rate: 115128 op/s, mean: 2171 ns, took: 60 s
 duration=1m0s, c=4
-rocksdb/nofsync set rate: 68190 op/s, mean: 3666 ns, took: 60 s
-rocksdb/nofsync get rate: 277746 op/s, mean: 900 ns, took: 60 s
-rocksdb/nofsync setmixed rate: 49612 op/s, mean: 20156 ns, took: 60 s
-rocksdb/nofsync getmixed rate: 159028 op/s, mean: 1572 ns, took: 60 s
-rocksdb/nofsync del rate: 77625 op/s, mean: 3220 ns, took: 60 s
+rocksdb/nofsync set rate: 68672 op/s, mean: 3640 ns, took: 60 s
+rocksdb/nofsync get rate: 285757 op/s, mean: 874 ns, took: 60 s
+rocksdb/nofsync setmixed rate: 50728 op/s, mean: 19712 ns, took: 60 s
+rocksdb/nofsync getmixed rate: 163840 op/s, mean: 1525 ns, took: 60 s
+rocksdb/nofsync del rate: 79451 op/s, mean: 3146 ns, took: 60 s
 duration=1m0s, c=4
-btree/nofsync set rate: 110309 op/s, mean: 2266 ns, took: 60 s
-btree/nofsync get rate: 2658817 op/s, mean: 94 ns, took: 60 s
-btree/nofsync setmixed rate: 47982 op/s, mean: 20840 ns, took: 60 s
-btree/nofsync getmixed rate: 196499 op/s, mean: 1272 ns, took: 60 s
-btree/nofsync del rate: 363296 op/s, mean: 688 ns, took: 60 s
+btree/nofsync set rate: 120735 op/s, mean: 2070 ns, took: 60 s
+btree/nofsync get rate: 2824666 op/s, mean: 88 ns, took: 60 s
+btree/nofsync setmixed rate: 49219 op/s, mean: 20317 ns, took: 60 s
+btree/nofsync getmixed rate: 200530 op/s, mean: 1246 ns, took: 60 s
+btree/nofsync del rate: 411943 op/s, mean: 606 ns, took: 60 s
 duration=1m0s, c=4
 panic: :memory: path not available
 
@@ -89,48 +96,90 @@ goroutine 1 [running]:
 main.main()
 	/Users/yuepan/go/src/github.com/smallnest/kvbench/cmd/cli/main.go:40 +0x1b6d
 duration=1m0s, c=4
-map/nofsync set rate: 113613 op/s, mean: 2200 ns, took: 60 s
-map/nofsync get rate: 6344695 op/s, mean: 39 ns, took: 60 s
-map/nofsync setmixed rate: 68269 op/s, mean: 14647 ns, took: 60 s
-map/nofsync getmixed rate: 292919 op/s, mean: 853 ns, took: 60 s
-map/nofsync del rate: 1359670 op/s, mean: 183 ns, took: 60 s
+map/nofsync set rate: 121238 op/s, mean: 2062 ns, took: 60 s
+map/nofsync get rate: 5891583 op/s, mean: 42 ns, took: 60 s
+map/nofsync setmixed rate: 74092 op/s, mean: 13496 ns, took: 60 s
+map/nofsync getmixed rate: 321649 op/s, mean: 777 ns, took: 60 s
+map/nofsync del rate: 1288092 op/s, mean: 194 ns, took: 60 s
 duration=1m0s, c=4
-20888:M 05 Feb 18:23:57.510 * persistance disabled
-map/memory/nofsync set rate: 470461 op/s, mean: 531 ns, took: 60 s
-map/memory/nofsync get rate: 4450767 op/s, mean: 56 ns, took: 60 s
-map/memory/nofsync setmixed rate: 66930 op/s, mean: 14940 ns, took: 60 s
-map/memory/nofsync getmixed rate: 332218 op/s, mean: 752 ns, took: 60 s
-map/memory/nofsync del rate: 3833123 op/s, mean: 65 ns, took: 60 s
+23346:M 05 Feb 19:41:58.294 * persistance disabled
+map/memory/nofsync set rate: 476799 op/s, mean: 524 ns, took: 60 s
+map/memory/nofsync get rate: 4722557 op/s, mean: 52 ns, took: 60 s
+map/memory/nofsync setmixed rate: 132830 op/s, mean: 7528 ns, took: 60 s
+map/memory/nofsync getmixed rate: 676388 op/s, mean: 369 ns, took: 60 s
+map/memory/nofsync del rate: 3455491 op/s, mean: 72 ns, took: 60 s
 duration=1m0s, c=4
-badger 2020/02/05 18:28:00 INFO: All 0 tables opened in 0s
-badger/fsync set rate: 15179 op/s, mean: 16469 ns, took: 60 s
-badger/fsync get rate: 642916 op/s, mean: 388 ns, took: 60 s
-badger 2020/02/05 18:30:12 DEBUG: Flushing memtable, mt.size=60999694 size of flushChan: 0
-badger 2020/02/05 18:30:12 DEBUG: Storing value log head: {Fid:1 Len:35 Offset:158499987}
-badger/fsync setmixed rate: 7555 op/s, mean: 132354 ns, took: 60 s
-badger/fsync getmixed rate: 33556 op/s, mean: 7450 ns, took: 60 s
-badger 2020/02/05 18:31:40 DEBUG: Flushing memtable, mt.size=53369981 size of flushChan: 0
-badger 2020/02/05 18:31:40 DEBUG: Storing value log head: {Fid:3 Len:35 Offset:30499985}
-badger/fsync del rate: 15825 op/s, mean: 15797 ns, took: 60 s
+badger 2020/02/05 19:45:59 INFO: All 1 tables opened in 36ms
+badger 2020/02/05 19:45:59 INFO: Replaying file id: 8 at offset: 30499898
+badger 2020/02/05 19:45:59 INFO: Replay took: 268.412µs
+badger 2020/02/05 19:45:59 INFO: Replaying file id: 9 at offset: 0
+badger 2020/02/05 19:46:01 INFO: Replay took: 1.39852069s
+badger 2020/02/05 19:46:01 INFO: Replaying file id: 10 at offset: 0
+badger 2020/02/05 19:46:02 INFO: Replay took: 1.394340799s
+badger 2020/02/05 19:46:02 INFO: Replaying file id: 11 at offset: 0
+badger 2020/02/05 19:46:03 DEBUG: Flushing memtable, mt.size=67108884 size of flushChan: 0
+badger 2020/02/05 19:46:03 DEBUG: Storing value log head: {Fid:0 Len:0 Offset:0}
+badger 2020/02/05 19:46:04 INFO: Replay took: 1.352663256s
+badger 2020/02/05 19:46:04 INFO: Replaying file id: 12 at offset: 0
+badger 2020/02/05 19:46:04 INFO: Replay took: 855.58329ms
+badger 2020/02/05 19:46:04 DEBUG: Value log discard stats empty
+badger 2020/02/05 19:46:51 DEBUG: Flushing memtable, mt.size=67108903 size of flushChan: 0
+badger 2020/02/05 19:46:51 DEBUG: Storing value log head: {Fid:13 Len:35 Offset:78875433}
+badger/fsync set rate: 15762 op/s, mean: 15860 ns, took: 60 s
+badger/fsync get rate: 466590 op/s, mean: 535 ns, took: 60 s
+badger/fsync setmixed rate: 8165 op/s, mean: 122470 ns, took: 60 s
+badger/fsync getmixed rate: 33885 op/s, mean: 7377 ns, took: 60 s
+badger 2020/02/05 19:49:08 DEBUG: Flushing memtable, mt.size=45100311 size of flushChan: 0
+badger 2020/02/05 19:49:08 DEBUG: Storing value log head: {Fid:14 Len:35 Offset:142496926}
+badger/fsync del rate: 16525 op/s, mean: 15128 ns, took: 60 s
 duration=1m0s, c=4
-bbolt/fsync set rate: 45 op/s, mean: 5480024 ns, took: 60 s
-bbolt/fsync get rate: 630710 op/s, mean: 396 ns, took: 60 s
-bbolt/fsync setmixed rate: 48 op/s, mean: 20626735 ns, took: 60 s
-bbolt/fsync getmixed rate: 599809 op/s, mean: 416 ns, took: 60 s
-bbolt/fsync del rate: 46 op/s, mean: 5404275 ns, took: 60 s
+bbolt/fsync set rate: 44 op/s, mean: 5561143 ns, took: 60 s
+bbolt/fsync get rate: 626296 op/s, mean: 399 ns, took: 60 s
+bbolt/fsync setmixed rate: 47 op/s, mean: 21261862 ns, took: 60 s
+bbolt/fsync getmixed rate: 588387 op/s, mean: 424 ns, took: 60 s
+bbolt/fsync del rate: 45 op/s, mean: 5542264 ns, took: 60 s
 duration=1m0s, c=4
-bolt/fsync set rate: 46 op/s, mean: 5418967 ns, took: 60 s
-bolt/fsync get rate: 646400 op/s, mean: 386 ns, took: 59 s
-bolt/fsync setmixed rate: 49 op/s, mean: 20242940 ns, took: 60 s
-bolt/fsync getmixed rate: 624016 op/s, mean: 400 ns, took: 60 s
-bolt/fsync del rate: 46 op/s, mean: 5400533 ns, took: 60 s
+bolt/fsync set rate: 47 op/s, mean: 5211650 ns, took: 60 s
+bolt/fsync get rate: 715604 op/s, mean: 349 ns, took: 60 s
+bolt/fsync setmixed rate: 49 op/s, mean: 20195272 ns, took: 60 s
+bolt/fsync getmixed rate: 697871 op/s, mean: 358 ns, took: 60 s
+bolt/fsync del rate: 46 op/s, mean: 5389867 ns, took: 60 s
 duration=1m0s, c=4
-leveldb/fsync set rate: 242 op/s, mean: 1032046 ns, took: 60 s
-leveldb/fsync get rate: 1211901 op/s, mean: 206 ns, took: 60 s
-leveldb/fsync setmixed rate: 82 op/s, mean: 12193658 ns, took: 60 s
-leveldb/fsync getmixed rate: 590052 op/s, mean: 423 ns, took: 60 s
-leveldb/fsync del rate: 237 op/s, mean: 1050707 ns, took: 60 s
+leveldb/fsync set rate: 236 op/s, mean: 1057856 ns, took: 60 s
+leveldb/fsync get rate: 1444444 op/s, mean: 173 ns, took: 60 s
+leveldb/fsync setmixed rate: 86 op/s, mean: 11545207 ns, took: 60 s
+leveldb/fsync getmixed rate: 730221 op/s, mean: 342 ns, took: 60 s
+leveldb/fsync del rate: 22879 op/s, mean: 10926 ns, took: 60 s
 duration=1m0s, c=4
-2020/02/05 18:44:01 main.go:272: [0;33m[warning] kv store is unstable[0m
-kv/fsync set rate: 11766 op/s, mean: 21246 ns, took: 60 s
-kv/fsync get rate: 25456 op/s, mean: 9820 ns, took: 60 s
+2020/02/05 20:02:05 main.go:272: [0;33m[warning] kv store is unstable[0m
+panic: open kv.db: file exists
+
+goroutine 1 [running]:
+main.main()
+	/Users/yuepan/go/src/github.com/smallnest/kvbench/cmd/cli/main.go:40 +0x1b6d
+duration=1m0s, c=4
+buntdb/fsync set rate: 97 op/s, mean: 2571000 ns, took: 60 s
+buntdb/fsync get rate: 2470810 op/s, mean: 101 ns, took: 60 s
+buntdb/fsync setmixed rate: 96 op/s, mean: 10385276 ns, took: 60 s
+buntdb/fsync getmixed rate: 1183 op/s, mean: 211242 ns, took: 60 s
+buntdb/fsync del rate: 180 op/s, mean: 1385554 ns, took: 60 s
+duration=1m0s, c=4
+pebble/fsync set rate: 30028 op/s, mean: 8325 ns, took: 60 s
+pebble/fsync get rate: 331905 op/s, mean: 753 ns, took: 60 s
+pebble/fsync setmixed rate: 3293 op/s, mean: 303638 ns, took: 60 s
+pebble/fsync getmixed rate: 284918 op/s, mean: 877 ns, took: 60 s
+pebble/fsync del rate: 33057 op/s, mean: 7562 ns, took: 60 s
+duration=1m0s, c=4
+pogreb: Performing recovery...
+pogreb: Index file size=93609984; data file size=1851068928
+pogreb: Header dbInfo {level:0 count:0 nBuckets:1 splitBucketIdx:0 freelistOff:-1 hashSeed:2457993385}
+pogreb: Recovered dbInfo {level:17 count:3235664 nBuckets:182831 splitBucketIdx:51759 freelistOff:-1 hashSeed:2457993385}
+pogreb: {1851067392 512} 1851068928
+pogreb: Recovered freelist. Old len=0; new len=111654
+pogreb: Recovery complete.
+pogreb/fsync set rate: 48 op/s, mean: 5150955 ns, took: 60 s
+pogreb/fsync get rate: 3108083 op/s, mean: 80 ns, took: 60 s
+pogreb/fsync setmixed rate: 48 op/s, mean: 20537759 ns, took: 60 s
+pogreb/fsync getmixed rate: 1057 op/s, mean: 236350 ns, took: 60 s
+pogreb/fsync del rate: 3690 op/s, mean: 67732 ns, took: 60 s
+duration=1m0s, c=4
