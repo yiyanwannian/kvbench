@@ -118,11 +118,9 @@ func (s *nutsdbStore) Keys(pattern []byte, limit int, withvals bool) ([][]byte, 
 			return err
 		}
 
-		ks, es := nutsdb.SortedEntryKeys(entries)
-
-		for i, key := range ks {
-			keys[i] = []byte(key)
-			vals[i] = es[key].Value
+		for i, entry := range entries {
+			keys[i] = entry.Key
+			vals[i] = entry.Value
 		}
 
 		return nil

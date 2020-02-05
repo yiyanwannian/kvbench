@@ -12,7 +12,7 @@ import (
 )
 
 var errMemoryNotAllowed = errors.New(":memory: path not available")
-var log = redlog.New(os.Stderr)
+var log = redlog.New(os.Stderr, nil)
 
 type Options struct {
 	Port  int
