@@ -105,11 +105,6 @@ func Start(opts Options) error {
 			path = "nutsdb.db"
 		}
 		store, err = NewNutsdbStore(path, fsync)
-	case "sniper":
-		if path == "" {
-			path = "sniper.db"
-		}
-		store, err = NewSniperStore(path, fsync)
 	}
 
 	if err != nil {
