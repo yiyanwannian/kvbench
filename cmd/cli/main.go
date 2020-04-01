@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/binary"
 	"flag"
 	"fmt"
@@ -20,11 +21,12 @@ var (
 	size     = flag.Int("size", 256, "data size")
 	fsync    = flag.Bool("fsync", false, "fsync")
 	s        = flag.String("s", "map", "store type")
+	data     = make([]byte, *size)
 )
 
 func main() {
-	flag.Parse()
 
+	flag.Parse()
 	fmt.Printf("duration=%v, c=%d\n", *duration, *c)
 
 	var memory bool
@@ -53,117 +55,31 @@ func main() {
 		name = name + "/nofsync"
 	}
 
-	data := make([]byte, *size)
+	testSet(name, store)
+	testGet(name, store)
+	testGetSet(name, store)
+	testDelete(name, store)
+}
 
-	// test set
-	{
-		var wg sync.WaitGroup
-		wg.Add(*c)
+// test get
+func testGet(name string, store kvbench.Store) {
+	var wg sync.WaitGroup
+	wg.Add(*c)
 
-		var stop bool
-		time.AfterFunc(*duration, func() {
-			stop = true
-		})
-		counts := make([]int, *c)
-		start := time.Now()
-		for j := 0; j < *c; j++ {
-			index := uint64(j)
-			go func() {
-				count := 0
-				i := index
-				for k := 0; !stop; k++ {
-					store.Set(genKey(i), data)
-					i += uint64(*c)
-					count++
-				}
-				counts[index] = count
-				wg.Done()
-			}()
-		}
-		wg.Wait()
-		dur := time.Since(start)
-		d := int64(dur)
-		var n int
-		for _, count := range counts {
-			n += count
-		}
-		fmt.Printf("%s set rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
-	}
-
-	// test get
-	{
-		var wg sync.WaitGroup
-		wg.Add(*c)
-
-		var stop bool
-		time.AfterFunc(*duration, func() {
-			stop = true
-		})
-
-		counts := make([]int, *c)
-		start := time.Now()
-		for j := 0; j < *c; j++ {
-			index := uint64(j)
-			go func() {
-				var count int
-				i := index
-				for k := 0; !stop; k++ {
-					_, ok, _ := store.Get(genKey(i))
-					if !ok {
-						i = index
-					}
-					i += uint64(*c)
-					count++
-				}
-				counts[index] = count
-				wg.Done()
-			}()
-		}
-		wg.Wait()
-		dur := time.Since(start)
-		d := int64(dur)
-		var n int
-		for _, count := range counts {
-			n += count
-		}
-		fmt.Printf("%s get rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
-	}
-
-	// test multiple get/one set
-	{
-		var wg sync.WaitGroup
-		wg.Add(*c)
-
-		ch := make(chan struct{})
-
-		var setCount uint64
-
+	ctx, _ := context.WithTimeout(context.Background(), *duration)
+	counts := make([]int, *c)
+	start := time.Now()
+	for j := 0; j < *c; j++ {
+		index := uint64(j)
 		go func() {
-			i := uint64(0)
+			var count int
+			i := index
+		LOOP:
 			for {
 				select {
-				case <-ch:
-					return
+				case <-ctx.Done():
+					break LOOP
 				default:
-					store.Set(genKey(i), data)
-					setCount++
-					i++
-				}
-			}
-		}()
-
-		var stop bool
-		time.AfterFunc(*duration, func() {
-			stop = true
-		})
-		counts := make([]int, *c)
-		start := time.Now()
-		for j := 0; j < *c; j++ {
-			index := uint64(j)
-			go func() {
-				var count int
-				i := index
-				for k := 0; !stop; k++ {
 					_, ok, _ := store.Get(genKey(i))
 					if !ok {
 						i = index
@@ -171,63 +87,85 @@ func main() {
 					i += uint64(*c)
 					count++
 				}
-				counts[index] = count
-				wg.Done()
-			}()
-		}
-		wg.Wait()
-		close(ch)
-		dur := time.Since(start)
-		d := int64(dur)
-		var n int
-		for _, count := range counts {
-			n += count
-		}
-
-		if setCount == 0 {
-			fmt.Printf("%s setmixed rate: -1 op/s, mean: -1 ns, took: %d s\n", name, int(dur.Seconds()))
-		} else {
-			fmt.Printf("%s setmixed rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(setCount)*1e6/(d/1e3), d/int64(setCount), int(dur.Seconds()))
-		}
-		fmt.Printf("%s getmixed rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
+			}
+			counts[index] = count
+			wg.Done()
+		}()
 	}
+	wg.Wait()
+	dur := time.Since(start)
+	d := int64(dur)
+	var n int
+	for _, count := range counts {
+		n += count
+	}
+	fmt.Printf("%s get rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
+}
 
-	// test del
-	{
-		var wg sync.WaitGroup
-		wg.Add(*c)
+// test multiple get/one set
+func testGetSet(name string, store kvbench.Store) {
+	var wg sync.WaitGroup
+	wg.Add(*c)
 
-		var stop bool
-		time.AfterFunc(*duration, func() {
-			stop = true
-		})
+	ch := make(chan struct{})
 
-		counts := make([]int, *c)
-		start := time.Now()
-		for j := 0; j < *c; j++ {
-			index := uint64(j)
-			go func() {
-				var count int
-				i := index
-				for k := 0; !stop; k++ {
-					store.Del(genKey(i))
+	var setCount uint64
+
+	go func() {
+		i := uint64(0)
+		for {
+			select {
+			case <-ch:
+				return
+			default:
+				store.Set(genKey(i), data)
+				setCount++
+				i++
+			}
+		}
+	}()
+
+	ctx, _ := context.WithTimeout(context.Background(), *duration)
+	counts := make([]int, *c)
+	start := time.Now()
+	for j := 0; j < *c; j++ {
+		index := uint64(j)
+		go func() {
+			var count int
+			i := index
+		LOOP:
+			for {
+				select {
+				case <-ctx.Done():
+					break LOOP
+				default:
+					_, ok, _ := store.Get(genKey(i))
+					if !ok {
+						i = index
+					}
 					i += uint64(*c)
 					count++
 				}
-				counts[index] = count
-				wg.Done()
-			}()
-		}
-		wg.Wait()
-		dur := time.Since(start)
-		d := int64(dur)
-		var n int
-		for _, count := range counts {
-			n += count
-		}
-
-		fmt.Printf("%s del rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
+			}
+			counts[index] = count
+			wg.Done()
+		}()
 	}
+	wg.Wait()
+	close(ch)
+	dur := time.Since(start)
+	d := int64(dur)
+	var n int
+	for _, count := range counts {
+		n += count
+	}
+
+	if setCount == 0 {
+		fmt.Printf("%s setmixed rate: -1 op/s, mean: -1 ns, took: %d s\n", name, int(dur.Seconds()))
+	} else {
+		fmt.Printf("%s setmixed rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(setCount)*1e6/(d/1e3), d/int64(setCount), int(dur.Seconds()))
+	}
+	fmt.Printf("%s getmixed rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
 }
 
 func genKey(i uint64) []byte {
@@ -307,4 +245,80 @@ func getStore(s string, fsync bool, path string) (kvbench.Store, string, error) 
 	}
 
 	return store, path, err
+}
+
+func testSet(name string, store kvbench.Store) {
+	var wg sync.WaitGroup
+	wg.Add(*c)
+
+	ctx, _ := context.WithTimeout(context.Background(), *duration)
+
+	counts := make([]int, *c)
+	start := time.Now()
+	for j := 0; j < *c; j++ {
+		index := uint64(j)
+		go func() {
+			count := 0
+			i := index
+		LOOP:
+			for {
+				select {
+				case <-ctx.Done():
+					break LOOP
+				default:
+					store.Set(genKey(i), data)
+					i += uint64(*c)
+					count++
+				}
+			}
+			counts[index] = count
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+	dur := time.Since(start)
+	d := int64(dur)
+	var n int
+	for _, count := range counts {
+		n += count
+	}
+	fmt.Printf("%s set rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
+}
+
+func testDelete(name string, store kvbench.Store) {
+	var wg sync.WaitGroup
+	wg.Add(*c)
+
+	ctx, _ := context.WithTimeout(context.Background(), *duration)
+	counts := make([]int, *c)
+	start := time.Now()
+	for j := 0; j < *c; j++ {
+		index := uint64(j)
+		go func() {
+			var count int
+			i := index
+		LOOP:
+			for {
+				select {
+				case <-ctx.Done():
+					break LOOP
+				default:
+					store.Del(genKey(i))
+					i += uint64(*c)
+					count++
+				}
+			}
+			counts[index] = count
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+	dur := time.Since(start)
+	d := int64(dur)
+	var n int
+	for _, count := range counts {
+		n += count
+	}
+
+	fmt.Printf("%s del rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
 }
