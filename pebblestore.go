@@ -2,6 +2,7 @@ package kvbench
 
 import (
 	"bytes"
+	"io"
 	"sync"
 
 	"github.com/cockroachdb/pebble"
@@ -63,9 +64,11 @@ func (s *pebbleStore) PGet(keys [][]byte) ([][]byte, []bool, error) {
 	var oks = make([]bool, len(keys))
 
 	var err error
+	var closer io.Closer
 	for i, k := range keys {
-		vals[i], err = s.db.Get(k)
+		vals[i], closer, err = s.db.Get(k)
 		oks[i] = (err == nil)
+		closer.Close()
 	}
 	return vals, oks, err
 }
@@ -75,7 +78,8 @@ func (s *pebbleStore) Set(key, value []byte) error {
 }
 
 func (s *pebbleStore) Get(key []byte) ([]byte, bool, error) {
-	v, err := s.db.Get(key)
+	v, closer, err := s.db.Get(key)
+	closer.Close()
 	return v, v != nil, err
 }
 

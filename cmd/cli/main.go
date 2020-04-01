@@ -66,7 +66,9 @@ func testGet(name string, store kvbench.Store) {
 	var wg sync.WaitGroup
 	wg.Add(*c)
 
-	ctx, _ := context.WithTimeout(context.Background(), *duration)
+	ctx, cancel := context.WithTimeout(context.Background(), *duration)
+	defer cancel()
+
 	counts := make([]int, *c)
 	start := time.Now()
 	for j := 0; j < *c; j++ {
@@ -125,7 +127,9 @@ func testGetSet(name string, store kvbench.Store) {
 		}
 	}()
 
-	ctx, _ := context.WithTimeout(context.Background(), *duration)
+	ctx, cancel := context.WithTimeout(context.Background(), *duration)
+	defer cancel()
+
 	counts := make([]int, *c)
 	start := time.Now()
 	for j := 0; j < *c; j++ {
@@ -166,6 +170,85 @@ func testGetSet(name string, store kvbench.Store) {
 		fmt.Printf("%s setmixed rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(setCount)*1e6/(d/1e3), d/int64(setCount), int(dur.Seconds()))
 	}
 	fmt.Printf("%s getmixed rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
+}
+
+func testSet(name string, store kvbench.Store) {
+	var wg sync.WaitGroup
+	wg.Add(*c)
+
+	ctx, cancel := context.WithTimeout(context.Background(), *duration)
+	defer cancel()
+
+	counts := make([]int, *c)
+	start := time.Now()
+	for j := 0; j < *c; j++ {
+		index := uint64(j)
+		go func() {
+			count := 0
+			i := index
+		LOOP:
+			for {
+				select {
+				case <-ctx.Done():
+					break LOOP
+				default:
+					store.Set(genKey(i), data)
+					i += uint64(*c)
+					count++
+				}
+			}
+			counts[index] = count
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+	dur := time.Since(start)
+	d := int64(dur)
+	var n int
+	for _, count := range counts {
+		n += count
+	}
+	fmt.Printf("%s set rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
+}
+
+func testDelete(name string, store kvbench.Store) {
+	var wg sync.WaitGroup
+	wg.Add(*c)
+
+	ctx, cancel := context.WithTimeout(context.Background(), *duration)
+	defer cancel()
+
+	counts := make([]int, *c)
+	start := time.Now()
+	for j := 0; j < *c; j++ {
+		index := uint64(j)
+		go func() {
+			var count int
+			i := index
+		LOOP:
+			for {
+				select {
+				case <-ctx.Done():
+					break LOOP
+				default:
+					store.Del(genKey(i))
+					i += uint64(*c)
+					count++
+				}
+			}
+			counts[index] = count
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+	dur := time.Since(start)
+	d := int64(dur)
+	var n int
+	for _, count := range counts {
+		n += count
+	}
+
+	fmt.Printf("%s del rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
 }
 
 func genKey(i uint64) []byte {
@@ -245,80 +328,4 @@ func getStore(s string, fsync bool, path string) (kvbench.Store, string, error) 
 	}
 
 	return store, path, err
-}
-
-func testSet(name string, store kvbench.Store) {
-	var wg sync.WaitGroup
-	wg.Add(*c)
-
-	ctx, _ := context.WithTimeout(context.Background(), *duration)
-
-	counts := make([]int, *c)
-	start := time.Now()
-	for j := 0; j < *c; j++ {
-		index := uint64(j)
-		go func() {
-			count := 0
-			i := index
-		LOOP:
-			for {
-				select {
-				case <-ctx.Done():
-					break LOOP
-				default:
-					store.Set(genKey(i), data)
-					i += uint64(*c)
-					count++
-				}
-			}
-			counts[index] = count
-			wg.Done()
-		}()
-	}
-	wg.Wait()
-	dur := time.Since(start)
-	d := int64(dur)
-	var n int
-	for _, count := range counts {
-		n += count
-	}
-	fmt.Printf("%s set rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
-}
-
-func testDelete(name string, store kvbench.Store) {
-	var wg sync.WaitGroup
-	wg.Add(*c)
-
-	ctx, _ := context.WithTimeout(context.Background(), *duration)
-	counts := make([]int, *c)
-	start := time.Now()
-	for j := 0; j < *c; j++ {
-		index := uint64(j)
-		go func() {
-			var count int
-			i := index
-		LOOP:
-			for {
-				select {
-				case <-ctx.Done():
-					break LOOP
-				default:
-					store.Del(genKey(i))
-					i += uint64(*c)
-					count++
-				}
-			}
-			counts[index] = count
-			wg.Done()
-		}()
-	}
-	wg.Wait()
-	dur := time.Since(start)
-	d := int64(dur)
-	var n int
-	for _, count := range counts {
-		n += count
-	}
-
-	fmt.Printf("%s del rate: %d op/s, mean: %d ns, took: %d s\n", name, int64(n)*1e6/(d/1e3), d/int64((n)*(*c)), int(dur.Seconds()))
 }

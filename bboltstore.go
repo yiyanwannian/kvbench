@@ -4,8 +4,8 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/etcd-io/bbolt"
 	"github.com/tidwall/match"
+	"go.etcd.io/bbolt"
 )
 
 var bboltBucket = []byte("keys")
