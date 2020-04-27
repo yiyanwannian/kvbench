@@ -4,10 +4,11 @@ cloned from [tidwall/kvbench](https://github.com/tidwall/kvbench)
 
 KVBench is a Redis server clone backed by a few different Go databases. 
 
-It's intended to be used with the `redis-benchmark` command to test the performance of various Go databases.
-It has support for redis pipelining.
+It's intended to be used with the `redis-benchmark` command to test the
+performance of various Go databases.  It has support for redis pipelining. The
+`redis-benchmark` can run as explained here https://github.com/tidwall/kvbench#examples.
 
-this cloned version adds more kv databases and automatic scripts.
+This cloned version adds more kv databases and automatic scripts.
 
 Features:
 
@@ -30,6 +31,8 @@ Features:
 
 
 ## SSD benchmark
+The following benchmarks show the throughput of inserting/reading keys (of size
+9 bytes) and values (of size 256 bytes).
 
 ### nofsync
 
