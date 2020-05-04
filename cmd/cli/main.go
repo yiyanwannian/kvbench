@@ -17,8 +17,9 @@ import (
 
 var (
 	duration = flag.Duration("d", time.Minute, "test duration for each case")
-	c        = flag.Int("c", runtime.GOMAXPROCS(-1), "concurrent goroutines")
+	c        = flag.Int("c", runtime.NumCPU(), "concurrent goroutines")
 	size     = flag.Int("size", 256, "data size")
+	keyCount = flag.Int("n", 10e5, "Number of keys to insert in batch write test)")
 	fsync    = flag.Bool("fsync", false, "fsync")
 	s        = flag.String("s", "map", "store type")
 	data     = make([]byte, *size)
@@ -55,10 +56,26 @@ func main() {
 		name = name + "/nofsync"
 	}
 
+	testBatchWrite(name, store)
 	testSet(name, store)
 	testGet(name, store)
 	testGetSet(name, store)
 	testDelete(name, store)
+}
+
+// test batch writes
+func testBatchWrite(name string, store kvbench.Store) {
+	var keyList, valList [][]byte
+	for i := uint64(0); i < uint64(*keyCount); i++ {
+		keyList = append(keyList, genKey(i))
+		valList = append(valList, data)
+	}
+	start := time.Now()
+	err := store.PSet(keyList, valList)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%s load test inserted: %d entries; took: %s s\n", name, *keyCount, time.Since(start))
 }
 
 // test get

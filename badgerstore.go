@@ -41,16 +41,14 @@ func (s *badgerStore) Close() error {
 }
 
 func (s *badgerStore) PSet(keys, vals [][]byte) error {
-	txn := s.db.NewTransaction(true)
-	for i, k := range keys {
-		v := vals[i]
-		if err := txn.Set(k, v); err == badger.ErrTxnTooBig {
-			_ = txn.Commit()
-			txn = s.db.NewTransaction(true)
-			_ = txn.Set(k, v)
+	wb := s.db.NewWriteBatch()
+	for i := range keys {
+		err := wb.Set(keys[i], vals[i])
+		if err != nil {
+			return err
 		}
 	}
-	return txn.Commit()
+	return wb.Flush()
 }
 
 func (s *badgerStore) PGet(keys [][]byte) ([][]byte, []bool, error) {
