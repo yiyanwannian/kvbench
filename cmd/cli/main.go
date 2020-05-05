@@ -42,7 +42,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	if memory {
+	if !memory {
 		defer os.RemoveAll(path)
 	}
 
