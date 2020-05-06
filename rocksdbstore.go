@@ -57,6 +57,7 @@ func (s *rocksdbStore) Close() error {
 
 func (s *rocksdbStore) PSet(keys, vals [][]byte) error {
 	wb := rocksdb.NewWriteBatch()
+	defer wb.Destroy()
 
 	for i, k := range keys {
 		wb.Put(k, vals[i])
