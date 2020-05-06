@@ -46,6 +46,7 @@ func main() {
 		defer os.RemoveAll(path)
 	}
 
+	defer store.Close()
 	name := *s
 	if memory {
 		name = name + "/memory"
