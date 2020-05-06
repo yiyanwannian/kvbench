@@ -5,10 +5,12 @@ import (
 	"encoding/binary"
 	"flag"
 	"fmt"
+	"math/rand"
 	"os"
 	"runtime"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/smallnest/kvbench"
@@ -19,7 +21,6 @@ var (
 	duration = flag.Duration("d", time.Minute, "test duration for each case")
 	c        = flag.Int("c", runtime.NumCPU(), "concurrent goroutines")
 	size     = flag.Int("size", 256, "data size")
-	keyCount = flag.Int("n", 10e5, "Number of keys to insert in batch write test)")
 	fsync    = flag.Bool("fsync", false, "fsync")
 	s        = flag.String("s", "map", "store type")
 	data     = make([]byte, *size)
@@ -28,7 +29,7 @@ var (
 func main() {
 
 	flag.Parse()
-	fmt.Printf("duration=%v, c=%d\n", *duration, *c)
+	fmt.Printf("duration=%v, c=%d size=%d\n", *duration, *c, *size)
 
 	var memory bool
 	var path string
@@ -42,7 +43,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	if memory {
+	if !memory {
 		defer os.RemoveAll(path)
 	}
 
@@ -57,6 +58,7 @@ func main() {
 	}
 
 	testBatchWrite(name, store)
+	return
 	testSet(name, store)
 	testGet(name, store)
 	testGetSet(name, store)
@@ -65,17 +67,44 @@ func main() {
 
 // test batch writes
 func testBatchWrite(name string, store kvbench.Store) {
-	var keyList, valList [][]byte
-	for i := uint64(0); i < uint64(*keyCount); i++ {
-		keyList = append(keyList, genKey(i))
-		valList = append(valList, data)
-	}
+	var wg sync.WaitGroup
 	start := time.Now()
-	err := store.PSet(keyList, valList)
-	if err != nil {
-		panic(err)
+	ctx, cancel := context.WithTimeout(context.Background(), *duration)
+	defer cancel()
+
+	var total uint64
+	for i := 0; i < *c; i++ {
+		wg.Add(1)
+		go func(proc int) {
+			batchSize := uint64(1000)
+			var keyList, valList [][]byte
+			for i := uint64(0); i < batchSize; i++ {
+				keyList = append(keyList, genKey(i))
+				valList = append(valList, make([]byte, *size))
+			}
+		LOOP:
+			for {
+				select {
+				case <-ctx.Done():
+					break LOOP
+				default:
+					// Fill random keys and values.
+					for i := range keyList {
+						rand.Read(keyList[i])
+						rand.Read(valList[i])
+					}
+					err := store.PSet(keyList, valList)
+					if err != nil {
+						panic(err)
+					}
+					atomic.AddUint64(&total, uint64(len(keyList)))
+				}
+			}
+			wg.Done()
+		}(i)
 	}
-	fmt.Printf("%s load test inserted: %d entries; took: %s s\n", name, *keyCount, time.Since(start))
+	wg.Wait()
+	fmt.Printf("%s batch write test inserted: %d entries; took: %s s\n", name, total, time.Since(start))
 }
 
 // test get
