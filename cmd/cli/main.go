@@ -58,7 +58,6 @@ func main() {
 	}
 
 	testBatchWrite(name, store)
-	return
 	testSet(name, store)
 	testGet(name, store)
 	testGetSet(name, store)
